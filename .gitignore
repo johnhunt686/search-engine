@@ -1,2 +1,38 @@
-search_engine
+#CMake build directory
+/build/
+/build-*/
+
+#CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+
+#Generated build systems
+*.ninja
+.ninja_deps
+.ninja_log
+
+#Compiled binaries
+*.exe
+*.out
+*.app
+
+#Object files
+*.o
+*.obj
+*.so
+*.dll
+*.dylib
+
+#Debug symbols
+*.pdb
+
+#VS Code
 .vscode/
+
+#macOS
+.DS_Store
+
+#Windows
+Thumbs.db
