@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <pqxx/pqxx>
 
 
 int main(int argc, char* argv[])

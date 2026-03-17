@@ -18,7 +18,7 @@ app.get("/search", (req, res) => {
     if (setting2) args.push(`setting2=${setting2}`);
     if (setting3) args.push(`setting3=${setting3}`);
 
-    execFile("./search_engine", args, (err, stdout, stderr) => {
+    execFile("./build/SearchEngine", args, (err, stdout, stderr) => {
         if (err) {
             console.error("Execution error:", err);
             console.error("stderr:", stderr);
