@@ -1,6 +1,11 @@
 # search-engine
+For build details and documentation see Build and Run
 
-## 'the search engine' John
+
+
+
+# Build and Run
+## 'the search engine' - John
 this must be compiled for the system to be tested on
 ```gdc search_engine.cpp```
 then the node.js server can be started with
