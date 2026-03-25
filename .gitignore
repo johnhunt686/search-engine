@@ -36,3 +36,4 @@ Makefile
 
 #Windows
 Thumbs.db
+src/search_engine
