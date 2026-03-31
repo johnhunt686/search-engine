@@ -58,4 +58,4 @@ def crawler(numIterations, startingURL):
 
 
 
-crawler(20, "https://grandorder.gamepress.gg/")
+crawler(20, "https://minecraft.wiki/")
