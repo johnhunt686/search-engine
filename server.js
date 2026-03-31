@@ -2,7 +2,7 @@ const express = require("express");
 const { execFile } = require("child_process");
 
 const app = express();
-const PORT = 3000;
+const PORT = 8080;
 
 app.get("/search", (req, res) => {
     const { q, setting1, setting2, setting3 } = req.query;
