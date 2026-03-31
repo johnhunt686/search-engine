@@ -1,0 +1,854 @@
+Url: https://calamitymod.wiki.gg/wiki/Crabulon
+
+
+Crabulon - Official Calamity Mod Wiki
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+AppearanceThemesCalamitousDevouring
+Create account
+Log in
+
+
+
+
+Toggle personal tools menu
+
+
+
+Create account
+Log in
+
+
+
+
+
+
+
+
+
+
+Navigation menu
+
+
+
+
+Namespaces
+
+
+
+PageDiscussion
+
+
+
+
+
+
+English
+
+
+
+
+
+
+
+
+
+
+Views
+
+
+
+ReadSign up to editView sourceView history
+
+
+
+
+
+
+More
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+						Search
+					
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Navigation
+
+
+
+Main pageRecent changesRandom pageCommunity noticeboardAdmin noticeboardWiki rules
+
+
+
+
+
+Resources
+
+
+
+Class setupsGuidesLoreMod progressionRecipe finderVanilla changes
+
+
+
+
+
+Items
+
+
+
+AccessoriesArmorDropsToolsVanilla item recipesWeapons
+
+
+
+
+
+Characters
+
+
+
+BossesCrittersEnemiesNPCs
+
+
+
+
+
+Portals
+
+
+
+WebsiteForum PageDiscordYouTubeTwitterBlueskyMerchandise
+
+
+
+
+
+Tools
+
+
+
+What links hereRelated changesNew pageSpecial pagesPrintable versionPage informationDatabase dataCite this page
+Expand all
+
+
+
+
+In other languages
+
+
+
+Русский
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Crabulon
+
+From Calamity Mod Wiki
+
+
+
+Jump to navigation
+Jump to search
+CrabulonMap iconStatisticsTypeBossEnvironmentGlowing Mushroom biomeDamage0 (Contact) 40 / 64  / 96  (Jump)18 / 36  / 54  (All Mushroom Projectile Attacks)Max Life3500 / 5600  / 7040  / 7140  / 8976 Defense8KB Resist100%Immune toResistancesCold VulnerableWater -Sickness VulnerableElectricity -Heat VulnerableDropsCoins5 Item (Quantity)RateGlowing Mushroom (20-30 / 25-35 )100%Mushroom Grass Seeds (3-6 / 5-10 )100%At least one of the following 6 weapons will always drop:Mycelial Claws25% / 33.33% Fungicide25% / 33.33% Hyphae Rod25% / 33.33% Infested Clawmerang25% / 33.33% Mycoroot25% / 33.33% Puff Shroom25% / 33.33% Lesser Healing Potion (5-15)100%Crabulon Mask14.29%Crabulon Trophy10%Crabulon (Lore)(Always on first kill)100%Treasure Bag(Crabulon)
+• Fungal Clump
+• Mushroom Plasma Root(In Revengeance Mode only)100% Crabulon Relic(In Master or Revengeance Mode only)100%  / 100% Thank You1%SoundsHurtKilledSlamMushroomJump
+ "Fungus and a sea crab. One sought a host; the other, a new home." 
+Crabulon is a Pre-Hardmode boss, intended to be fought after the Eye of Cthulhu.
+
+Contents
+
+1 Spawn
+2 Behavior
+
+2.1 Attacks
+2.2 In Expert Mode
+2.3 In Revengeance Mode
+2.4 In Death Mode
+2.5 On the For the worthy seed
+
+
+3 Summons
+4 Resistances
+5 Aftermath
+6 Notes
+7 Tips
+8 Trivia
+9 History
+
+
+Spawn
+Crabulon does not spawn naturally and the player is required to summon it by using the Decapodita Sprout in the Glowing Mushroom biome at any time.
+
+Behavior
+Crabulon will begin walking around and jumping at the player, all while firing a series of mushroom projectiles. It also starts summoning small Crab Shroom minions that slowly float downward while drifting towards the player. Crabulon will stay in its walking phase for a shorter time if it gets hit or the player is too close to it.
+
+Attacks
+Every 5.375 seconds while idling, Crabulon fires 1 Mushroom Shot at the player, which is affected by gravity.
+Mushroom shots start out translucent when fired and will not deal damage until they start falling, indicated by a round flash of particles. (This also applies to the falling mushrooms in higher difficulties)
+After 6 seconds of idling, it repeatedly slams its claws around. During this animation, it jumps towards the player 3 times, each with a 5-second delay.
+When 5% of its health is lost, the resulting hit launches 2 / 3  / 4  Crab Shrooms upwards.
+Crab Shrooms drift back and forth around the player and have a constant falling acceleration.
+In Expert Mode
+Gains the ability to jump through solid tiles.
+Stays in its walking phase for an even shorter time when getting hit or the player is too close to it.
+When at 66% health:
+The number of mushroom shots fired increased to 3.
+Fires mushroom shots 33.33% faster.
+Increases horizontal and projectile speed.
+Reduces the delay between jumps by 80%.
+Jumps 4 times instead of 3.
+When at 33% health:
+The number of mushroom shots fired increased to 6.
+Fires mushroom shots 40% faster.
+Increases horizontal and projectile speed.
+Reduces the delay between jumps by 40%.
+Fires a spread of 20 Falling Mushrooms on every other jump.
+In Revengeance Mode
+Spawns 3 Crab Shrooms instead of 2.
+Fires a large and random spread of 11  / 15  falling mushrooms into the air as Crabulon lands its final jump in each sequence.
+When at 66% health, it instead fires 20  / 24  falling mushrooms every other jump.
+Crabulon's jumps scale in height based on vertical distance from the player and attempts to intercept them if they are moving.
+Upwards speed, vertical acceleration, and fall speed while moving through tiles is increased.
+Each jump varies in length and delay.
+The first jump is normal in length and delay.
+The second jump is higher with a slightly shorter delay.
+The third jump is lower with a very short delay.
+The fourth jump is lower but longer with an extremely short delay.
+Crab Shrooms have a 25% higher terminal fall speed and faster horizontal and slower vertical velocity.
+Mushroom shots are fired at a faster rate.
+In Death Mode
+Spawns 4 Crab Shrooms instead of 3.
+Idles for less time as its health lowers, up to 2 seconds less.
+Moves even faster as its health lowers.
+Upwards speed, vertical acceleration, and fall speed while moving through tiles is increased.
+Crab Shrooms have a faster horizontal and slower vertical velocity.
+Fires mushroom shots at a faster rate and they are fired lower and decelerate less.
+Has a higher horizontal while jumping and falls faster when directly above the player during a jump.
+The number of falling mushrooms and their velocity are increased.
+When at 66% health, it fires falling mushrooms on every jump.
+Now has a new attack when below 66% health, where Crabulon will stomp 3 times, creating rows of horizontal mushroom projectiles on each stomp and a field of slow-falling mushroom projectiles on the final stomp.
+When at 33% health, its final jump fires even more falling mushrooms.
+Decreased number of mushroom projectiles spawned from jumps in later phases.
+Jumps now have greater horizontal distance but less vertical distance when below 50% health.
+Now has a new phase when below 15% health. In this phase, Crabulon has a faster walking speed, fires more mushroom projectiles at a faster rate and velocity while walking, and falls faster from jumps, but has a much longer idle timer.
+On the For the worthy seed
+Defense increased to 20.
+Moves faster.
+Is 50% larger.
+Crab Shrooms have their health increased to 30 / 60  / 90 .
+Crabulon spawns Crab Shrooms every 2% of health lost.
+Summons
+Crab ShroomStatisticsTypeFlying EnemyEnvironmentGlowing Mushroom biomeDamage18 / 36  / 54 Max Life15 / 30  / 45 Defense0KB Resist50% / 55%  / 60% Immune toResistancesCold VulnerableWater -Sickness VulnerableElectricity -Heat VulnerableSoundsHurtKilled
+Resistances
+Crabulon takes 80% damage from true melee hits.
+Aftermath
+After Crabulon is killed, a Goblin Invasion will start if one has not already been defeated in that world.
+This will happen regardless of whether any players in the world have more than 200 max health, or any Shadow Orbs/Crimson Hearts have been destroyed.
+Notes
+If Crabulon is stuck and cannot get to the player, it can swim through blocks, similarly to the Mourning Wood and Everscream.
+The effects that Crabulon makes in the Get fixed boi secret world seed can cause ill effects in real life to people with flashing lights/motion sickness problems.
+Tips
+For strategies on defeating Crabulon, including weapon and arena recommendations, see Guide:Crabulon strategies.
+Trivia
+Crabulon's theme is 1NF3$+@+!0N, which was composed by the artist DM DOKURO.
+When 1NF3$+@+!0N is played through a vectorscope, portions of the song create shapes that resemble mushrooms.
+The theme's name reads "Infestation".
+Crabulon is often referred to as "The Perfect One" in the player base in reference to its former lore where it was given the title.
+If the Boss Checklist Mod is installed, its unique despawn message will be "The monstrous mycelial crab shuffles away..."
+The Bestiary entry for the Crabulon: "A crustacean that once made its home in the heart of the Ilmeran Sea, managing to escape during the Great Incineration. Crabulon fled underground, enjoying the familiar blue glow given off by glowing mushrooms. Though it succumbed to the spores, it died in peace, reminded of its home."
+History
+editThese history sections are still a work-in-progress, and may not yet contain changes relevant to the current version of the Calamity Mod.
+2.1.0:
+Added new jump, slam, hit, and death sounds.
+Nerfed health from 3700 / 5920  / 7040  / 7548  / 8976   to 3500 / 5600  / 7040  / 7140  / 8976 .
+Nerfed Crab Shroom's health from 30 / 60  / 67  to 15 / 30  / 45 .
+Nerfed health in Boss Rush from 680,000 / 1,088,000  / 1,632,000  to 500,000 / 800,000  / 1,020,000 , and Crab Shroom's health in Boss Rush from 8000 / 16,000  / 18,000  to 6000 / 12,000  / 18,000 .
+Nerfed jump contact damage from 40 / 64  / 80  / 96  / 144  to 40 / 64  / 96 , and mushroom projectile damage from 32 / 48  / 60  / 72  / 108  to 18 / 36  / 54 . Nerfed Crab Shroom's damage from 25 / 50  / 62  / 74  / 111  to 18 / 36  / 54 .
+Can now only be spawned underground.
+No longer enrages outside the Mushroom biome or on the surface.
+Now switches target or despawns if its current target is over 500 tiles away.
+Increased base time spent in idle phase from 2 / 1  / 0.5  seconds to 2 / 1.5  / 1 , decreased how fast the idle timer speeds up when below 33% health in Expert Mode, and idle timer no longer speeds up when getting hit.
+Decreased number of mushroom projectiles fired while in walking phase.
+Slightly decreased boost to walking speed when below 33% health in Expert Mode.
+Increased maximum horizontal velocity on jumps in Revengeance Mode, but decreased maximum vertical velocity on jumps in all difficulties.
+Now has a new attack when below 66% health in Revengeance Mode, where Crabulon will jump over the player while spawning mushroom projectiles downwards, then spawn bursts of horizontal mushroom projectiles off to the sides when landing.
+Decreased number of mushroom projectiles spawned on jumps from 20  / 28  to 12  / 16 .
+Decreased the size of dusts spawned when mushroom projectiles hit a tile.
+Increased idle timer speed-up when too close to the player now occurs in Death Mode instead of Master Mode.
+Death Mode changes:
+Decreased number of mushroom projectiles spawned from jumps in later phases.
+Jumps now have greater horizontal distance but less vertical distance when below 50% health.
+Now has a new attack when below 66% health, where Crabulon will stomp 3 times, creating rows of horizontal mushroom projectiles on each stomp and a field of slow-falling mushroom projectiles on the final stomp.
+Now has a new phase when below 15% health. In this phase, Crabulon has a faster walking speed, fires more mushroom projectiles at a faster rate and velocity while walking, and falls faster from jumps, but has a much longer idle timer.
+Doubled walking speed, Crab Shroom having 200% size, Crab Shrooms falling slower, and Crab Shrooms pushing away from each other now occur in For the worthy instead of Legendary Mode.
+No longer spawns Crab Shrooms more often or gives a health boost to Crab Shrooms in Legendary Mode.
+Now has no health bar, map icon, or hover text in the Get fixed boi seed.
+Now forces a Goblin Army to invade when killed if the Goblin Army has not been defeated.
+Decreased coin drop value from 10  to 5 .
+Fungal Clump now only drops in Expert Mode.
+Now takes 80% damage from true melee weapons instead of 50%.
+More...
+2.0.4.003:
+Now only swaps targets after completing a full attack cycle.
+Now stays in the walking phase for a shorter time if it is getting hit or the player is too close to it. Getting hit or stay too close makes it stay in this phase for an even shorter time in Expert and Master Mode.
+2.0.4.002: Buffed contact damage in Master Mode from 120  to 144 , and Crab Shroom's damage from 75  to 111 . Buffed mushroom projectile damage from 96  to 108 .
+2.0.4.001:
+Changed health from 3350 / 5360  / 6400  / 8040  / 9600   to 3700 / 5920  / 7040  / 7548  / 8976  .
+Buffed Crab Shroom's health from 15 / 30  / 45  to 30 / 60  / 67 , and knockback resistance from 25% to 50%.
+Now properly scales health in Master Mode. This should result in lower health overall.
+No longer uses a global scaling contact damage formula based on boss velocity.
+Buffed contact damage in Death Mode from 88  to 96 , and Crab Shroom damage from 70  to 74 . Buffed mushroom projectile's damage from 32 / 48  / 60  / 68  / 90  to 32 / 48  / 60  / 72  / 96 .
+Decreased how far above the player it spawns.
+No longer deals contact damage while not jumping.
+Significantly decreased how long it idles before cycling its attack pattern, but hitting it no longer speeds up the idle timer.
+Increased walking speed, and walking speed now increases in higher difficulties.
+Decreased how long it stays in the walking phase and how long it takes to turn around while walking in Revengeance Mode.
+Now spawns 3 Crab Shrooms in Expert Mode instead of 2-3.
+Decreased how high mush bombs aim. Mush bombs are now shot at a faster rate in higher difficulties, and mush bomb speed now increases when below 66% and 33% health.
+Upwards speed, vertical acceleration, and fall speed while moving through tiles now increase in higher difficulties.
+Increased how often it jumps in Expert Mode and Boss Rush.
+Horizontal and vertical speed on jumps now scales based on health in Expert Mode and higher.
+Now spawns falling mushrooms on jumps when below 33% health in Expert Mode.
+Now idles for less time, spawns 4 Crab Shrooms instead of 3, shoots mush bombs lower and mush bombs decelerate less, has a higher horizontal speed while jumping, falls faster when directly above the player during a jump, increased number of falling mushrooms and their velocity, spawns falling mushrooms on every jump when below 66% health, and final jump spawns even more falling mushrooms when below 33% health in Death Mode.
+Crab Shrooms now spawn every 2% of health lost in the For the worthy seed instead of 2.5%.
+Crab Shrooms are no longer immune to lifesteal.
+Crab Shrooms now have a faster horizontal velocity and a slower vertical velocity in Revengeance and Death Mode.
+Crab Shrooms now have 25% less health and 10% less damage in Master Mode.
+Crab Shrooms now spawn less dust when hit and killed.
+2.0.3.002: Crab Shroom is now affected by the Boss Health Boost Percentage configuration option.
+2.0.3.001:
+Fixed a typo in its Boss Checklist Mod despawn message.
+Removed Crab Shroom's bestiary entry.
+2.0.2.002:
+Changed Boss Checklist Mod despawn message from "The mycleium crab has lost interest." to "The monstrous myclelial crab shuffles away…"[sic]
+It and Crab Shroom now properly display vanilla debuff colors and Hunter Potion effects.
+Fixed Crab Shroom being able to appear translucently behind world objects and backgrounds.
+2.0.1.003:
+No longer has 5-second custom spawn cooldown during Boss Rush.
+Nerfed Boss Rush health from 1,100,000 / 1,760,000  / 2,640,000  to 680,000 / 1,088,000  / 1,632,000 .
+Nerfed Crab Shroom Boss Rush health from 15,000 / 30,000  / 45,000  to 8000 / 16,000  / 24,000 .
+2.0.1.002: Nerfed Crab Shroom's health from 25 / 50  / 75  to 15 / 30  / 45 .
+2.0.1.001:
+Decreased delay before attacking the player when it is first spawned in on all modes.
+Now fires its Mushroom projectiles directly from its mouth on all modes. Additionally, Mushroom projectiles now spawn less dust to improve visibility.
+1.5.1.003: Now drops 10 .
+1.5.1.001:
+Buffed health from 3000 / 4800  / 6400  to 3350 / 5360  / 6400 .
+Buffed Falling Mushroom wall velocity during Boss Rush by 25%.
+No longer becomes hostile unless the player attacks it.
+Now takes 50% damage from true melee damage.
+It and Crab Shroom are now vulnerable to cold, sickness, and heat debuffs.
+Now drops Fungal Clump regardless of world difficulty.
+Fixed the hitbox.
+1.5.0.001:
+Nerfed Boss Rush health from 11,000,000 / 17,600,000  to 1,100,000 / 1,760,000 .
+No longer immune to any debuffs except Confused and Pearl Aura.
+Will now always jump towards the player instead of away from them.
+Can now walk on platforms in its idle state.
+Now utilizes three oval-shaped hitboxes to make the fight fairer.
+Crab Shroom no longer drops Hearts in Revengeance or Malice Mode.
+1.4.5.004:
+Now enrages when fought on the Surface or outside of the Glowing Mushroom biome.
+Now always launches 2 Crab Shrooms in Normal Mode instead of randomly launching 1 or 2.
+1.4.5.003:
+Now moves quicker, spawns more Crab Shrooms, and has decreased attack delay as its health decreases in Death Mode.
+Nerfed contact damage from 40 / 64  / 80  / 92  to 40 / 64  / 80  / 88 .
+1.4.5.001:
+Jumps now try to intercept and slam the player if they are moving.
+Jump height now increases based on how high up the player is.
+Added a glowmask to projectiles.
+1.4.4.001: It and Crab Shroom now have glowmasks.
+1.4.3.001:
+Nerfed contact damage from 40 / 64  / 80  / 92  to 40 / 64  / 76  / 84 .
+Nerfed Crab Shroom damage from 25 / 50  / 62  / 71  to 25 / 50  / 62  / 70 .
+Nerfed slam damage from 40 / 80  / 100  / 114  to 40 / 80  / 96  / 105 .
+Buffed mushroom shot damage from 28 / 44  / 55  / 63  to 32 / 48  / 60  / 67 .
+Increased run speed in Expert Mode, and even further in Revengeance Mode.
+Mushroom walls now move slightly diagonally when below 50% health in Revengeance Mode.
+Increased mushroom wall fall speed by 20% in Death Mode.
+Halved the time taken between jumps in Revengeance Mode.
+Now varies in jump speed and frequency in Revengeance Mode based on a pattern of four jumps.
+The second jump takes a shorter time to perform and jumps 33.33% higher.
+The third jump takes even shorter time to perform and jumps 33.33% lower.
+The fourth jump takes the shortest time to perform and jumps 33.33% lower but 100% farther.
+Death Mode now causes it to behave in final phase immediately instead of below 10% health.
+Decreased base attack speed in Death Mode.
+1.4.2.106:
+Buffed Boss Rush health from 2,000,000 / 3,200,000  / 3,680,000  to 10,000,000 / 16,000,000  / 17,600,000 .
+Buffed Crab Shroom's Boss Rush health from 90,000 / 180,000  to 150,000 / 300,000 .
+1.4.2.105: No longer walks away from the player when looked at.
+1.4.2.102: Fixed the hitbox.
+1.4.2.101: Buffed health from 1800 / 2880  / 4224  to 3000 / 4800  / 6400 .
+1.4.2.001:
+Nerfed Boss Rush health from 3,900,000 / 6,240,000  / 7,200,000  to 2,000,000 / 3,200,000  / 3,680,000 .
+Now immune to Glacial State and Temporal Sadness.
+Projectiles now have more descriptive names.
+Crab Shroom can no longer be lifestealed off of.
+1.4.1.001:
+Buffed Boss Rush health from 3,000,000 / 4,800,000  / 5,760,000  to 3,900,000 / 6,240,000  / 7,200,000 .
+Buffed Crab Shroom's Boss Rush health from 50,000 / 100,000  to 90,000 / 180,000 .
+Nerfed Boss Rush damage modifier from 4.75x to 4.5x.
+Now spawns further away from the player during Boss Rush.
+Buffed contact damage from 30 / 48  to 40 / 64 .
+Now has set amounts of contact damage per phase instead of having damage based on health.
+Increased fall speed while jumping.
+1.4.0.001: Now shoots Crab Shroom projectiles less often.
+1.3.4.103:
+Now summons falling walls of evenly-spaced Crab Shrooms in Revengeance Mode.
+Can now drop 1 Crabulon Mask.
+Resprited it, Crab Shroom, mushroom projectile, gores and map icon. Previous sprites were    
+1.3.4.101:
+Buffed health from 1800 / 2880  / 3520  / 9240  to 1800 / 2880  / 4224  / 11,088 .
+No longer has 20% damage reduction.
+1.3.4.001:
+Nerfed health from 3800 / 6080  / 7200  / 16,800  to 1800 / 2880  / 3520  / 9240 .
+Now spawns less Crab Shrooms in Normal Mode.
+1.3.3.011: Fixed a targeting issue.
+1.3.2.001:
+Nerfed contact damage from 50 / 80  to 30 / 48 .
+Crab Shrooms now produce light.
+Now shoots mushrooms in rapid succession, with the amount of mushrooms scaling with its health instead of occasional bursts.
+1.3.0.001:
+Now has gores.
+No longer immune to Brimstone Flames, Cursed Inferno, Frostburn, Glacial State, Holy Flames, On Fire!, Plague, Poisoned, or Temporal Sadness.
+Tweaked the Y-velocities of mushroom projectiles.
+1.2.4.201: Nerfed Crab Shroom health from 80 / 112  to 25 / 50 , and changed damage from 35 / 49  to 25 / 50 .
+1.2.4.101:
+Buffed Death Mode health from 8800  to 16,800 .
+Now uses 1NF3$+@+!0N as its theme.
+Now starts attacking the player 7 seconds after spawning instead of staying passive until being damaged.
+Can now drop 1 Mushroom Plasma Root in Revengeance Mode.
+1.2.4.001: Nerfed health from 5000 / 8000  / 9600  / 13,600  to 3800 / 6080  / 7200  / 8800 .
+1.2.3.005: Crab Shrooms no longer produce dust idly.
+1.2.3.002:
+Buffed health from 3000 / 4800  / 7200  to 5000 / 8000  / 9600 , and it now gets 13,600  health in Death Mode.
+Now switches through attacks quicker in Death Mode.
+1.2.3.001: No longer destroys blocks.
+1.2.2.001: Lowered chance to fire mushrooms.
+1.2.1.001: Fixed it being unable to despawn properly.
+1.2.0.004: No longer becomes passive if Fungal Clump is equipped.
+1.2.0.001:
+Now gets 7200  health in Revengeance Mode.
+Now has 20% damage reduction.
+Decreased size.
+Increased rate at which it does its slam attack.
+Now gets its damage boosted to 55 / 88  at 66% health instead of 50%.
+Now gets its damage boosted to 70 / 112  instead of 65 / 104  at 33% health.
+Modified sprite direction code.
+Can now drop Crabulon Trophy.
+Now has a 2%  chance to drop Laudanum or Stress Pills in Revengeance Mode.
+1.1.7.923: Nerfed mushroom projectile damage from 46 / 60  to 26 / 44  and decreased their gravity.
+1.1.7.901:
+Nerfed health from 4100 / 5330  to 3000 / 4800 , changed base contact damage from 40 / 44  to 30 / 49 , and nerfed defense from 12 to 8.
+Nerfed slam damage from 50 / 100  to 40 / 80 .
+Changed Crab Shroom's health from 100 / 110  to 80 / 112  and nerfed damage from 45 to 35.
+Slam attack now destroys more tiles.
+Can no longer naturally spawn.
+1.1.7.859: Now takes up 8 NPC slots instead of 7.
+1.1.7.809: No longer spawns directly on the player when using Decapodita Sprout.
+1.1.7.804: Now uses vanilla enemy spawn chance instead of custom one.
+1.1.7.701: Introduced.
+
+
+
+Collapsev · d · e Characters: Enemies:  Pre-Hardmode •  Hardmode •  Post-Moon Lord •  Event Enemies •  Bosses •  Critters •  Friendly NPCs  
+
+
+
+
+
+ExpandPre-Hardmode Enemies
+
+
+Surface
+
+Bucket Zombie • Clad Crab • Fearless Goldfish Warrior • Rotdog • Wulfrum Amplifier • Wulfrum Drone • Wulfrum Gyrator • Wulfrum Hovercraft • Wulfrum Rover
+
+
+Underground
+
+Amethyst Crawler • Sapphire Crawler • Topaz Crawler
+
+
+Cavern
+
+Burrower • Diamond Crawler • Emerald Crawler • Ruby Crawler
+
+
+Ocean
+
+??? • Box Jellyfish • Frogfish • Moray Eel
+
+
+Space
+
+Aero Slime • Sunskater
+
+
+Desert
+
+Amber Crawler • Cnidrion • Stormlion
+
+
+Snow
+
+Rimehound
+
+
+The Corruption
+
+Ebonian Blight Slime • Hive Tumor
+
+
+The Crimson
+
+Crimulan Blight Slime • Perforator Cyst
+
+
+Brimstone Crag
+
+Calamity Eye • Despair Stone • Heat Spirit • Scryllar • Soul Slurper
+
+
+Sulphurous Sea
+
+Aquatic Urchin • Gnasher • Sulflounder • Toxicatfish • Trasher
+
+
+Sunken Sea
+
+Clam • Eutrophic Ray • Ghost Bell • Prism-Back • Sea Floaty
+
+
+Abyss
+
+Box Jellyfish • Cannonball Jellyfish • Cuttlefish • Laserfish • Luminous Corvina • Moray Eel • Oarfish • Slab Crab • Toxic Minnow • Viperfish
+
+
+Other
+
+Super Dummy
+
+
+
+ExpandHardmode Enemies
+
+
+Underground
+
+Overloaded Soldier
+
+
+Cavern
+
+Earth Elemental • Perennial Slime
+
+
+Ocean
+
+Mantis Shrimp
+
+
+Snow
+
+Aurora Spirit • Cryo Slime • Cryon • Ice Clasper
+
+
+Space
+
+Cloud Elemental • Shockstorm Shuttle
+
+
+Jungle
+
+Melter • Pestilent Slime • Plaguebringer • Plagueshell • Plague Charger • Viruling
+
+
+The Hallow
+
+Crystal Crawler
+
+
+Dungeon
+
+Renegade Warlock
+
+
+Jungle Temple
+
+Bohldohr
+
+
+Astral Infection
+
+Aries • Astraglomerate (Glomerling) • Astral Probe • Astral Slime • Astralachnea • Atlas • Fusion Feeder • Hadarian • Mantis • Nova • Sightseer Collider • Sightseer Spitter • Stellar Culex
+
+
+Brimstone Crag
+
+Infernal Congealment • Renegade Warlock
+
+
+Sulphurous Sea
+
+Anthozoan Crab • Belching Coral
+
+
+Sunken Sea
+
+Blinded Angler • Sea Serpent
+
+
+Abyss
+
+Chaotic Puffer • Devil Fish • Eidolist • Giant Squid • Gulper Eel • Mirage Jelly
+
+
+
+ExpandPost-Moon Lord Enemies
+
+
+Cavern
+
+Bloom Slime
+
+
+Dungeon
+
+Phantom Spirit
+
+
+Jungle
+
+Draconic Swarmer
+
+
+The Hallow
+
+Impious Immolator • Profaned Energy • Scorn Eater
+
+
+The Underworld
+
+Impious Immolator • Profaned Energy • Scorn Eater
+
+
+Abyss
+
+Bloatfish • Bobbit Worm • Colossal Squid • Eidolon Wyrm • Reaper Shark
+
+
+Other
+
+Exhumed Brimstone Heart • Indignant Soul Seeker • Lecherous Orb • Mysterious Portal (Persecuted)
+
+
+
+ExpandEvent Enemies
+
+
+Acid Rain
+
+(Tier 1)
+
+Acid Eel • Nuclear Toad • Radiator • Skyfin
+
+
+(Tier 2)
+
+Flak Crab • Irradiated Slime • Orthocera • Sulphurous Skater • Trilobite
+
+
+(Tier 3)
+
+Gamma Slime
+
+
+
+CollapseBosses
+
+
+Pre-Hardmode
+
+King Slime (Ruby Jewel) • Desert Scourge (Desert Nuisance) • Eye of Cthulhu • Crabulon (Crab Shroom) • Eater of Worlds • Brain of Cthulhu • The Hive Mind (Dank Creeper • Hive Blob • Dark Heart) • The Perforators • Queen Bee • Deerclops • Skeletron • The Slime God (Corrupt Slime Spawn • Crimson Slime Spawn • Crimson Slime Spawn (spiked)) • Wall of Flesh
+
+
+Hardmode
+
+Queen Slime • Cryogen • The Twins • Aquatic Scourge • The Destroyer • Brimstone Elemental (Brimling) • Skeletron Prime • Calamitas Clone (Cataclymic Construct • Catastrophic Construct • Soul Seeker) • Plantera • Leviathan and Anahita (Aquatic Aberration) • Astrum Aureus (Aureus Spawn) • Golem • The Plaguebringer Goliath (Plague Homing Missile • Plague Mine) • Empress of Light • Duke Fishron • Ravager • Lunatic Cultist • Astrum Deus • Moon Lord
+
+
+Post-Moon Lord
+
+Profaned Guardians (Profaned Rocks) • Dragonfolly (Draconic Swarmer) • Providence, the Profaned Goddess (Profaned Guardians) • Storm Weaver • Ceaseless Void (Dark Energy) • Signus, Envoy of the Devourer (Cosmic Lantern • Cosmic Mine) • Polterghast (Phantom Spirit • Phantom • Polterghast Clone) • The Old Duke (Sulphurous Sharkron • Tooth Ball) • The Devourer of Gods • Yharon, Dragon of Rebirth • Exo Mechs (XS-01 Artemis • XS-03 Apollo • XM-05 Thanatos • XF-09 Ares) • Supreme Witch, Calamitas (Sepulcher • Catastrophe • Cataclysm • Soul Seeker)
+
+
+Hidden Boss
+
+Primordial Wyrm • THE LORDE • XB-∞ Hekate • Supreme Ultramage, Permafrost
+
+
+Mini Boss
+
+Cragmaw Mire • Giant Clam (Clam) • Great Sand Shark • Mauler • Nuclear Terror
+
+
+
+ExpandCritters
+
+
+Terrestrial
+
+Androomba • Baby Flak Crab • Bloodworm • Nanodroid • Piggy • Repair Unit • Shroomble • Twinkler
+
+
+Aquatic
+
+Baby Cannonball Jellyfish • Baby Ghost Bell • Sea Minnow
+
+
+
+ExpandFriendly NPCs
+
+
+Pre-Hardmode
+
+Bandit • Sea King
+
+
+Hardmode
+
+Archmage
+
+
+Post-Moon Lord
+
+Brimstone Witch
+
+
+
+
+
+
+Retrieved from "https://calamitymod.wiki.gg/wiki/Crabulon?oldid=288603"
+Categories: Boss NPCsGlowing Mushroom biome NPCsFlying Enemy NPCsHidden categories: Pages using DynamicPageList3 dplvar parser functionPages using DynamicPageList3 parser functionPages using DynamicPageList3 dplreplace parser functionEntities patched in 2.1.0Entities patched in 2.0.4.003Entities patched in 2.0.4.002Entities patched in 2.0.4.001Entities patched in 2.0.3.002Entities patched in 2.0.3.001Entities patched in 2.0.2.002Entities patched in 2.0.1.003Entities patched in 2.0.1.002Entities patched in 2.0.1.001Entities patched in 1.5.1.003Entities patched in 1.5.1.001Entities patched in 1.5.0.001Entities patched in 1.4.5.004Entities patched in 1.4.5.003Entities patched in 1.4.5.001Entities patched in 1.4.4.001Entities patched in 1.4.3.001Entities patched in 1.4.2.106Entities patched in 1.4.2.105Entities patched in 1.4.2.102Entities patched in 1.4.2.101Entities patched in 1.4.2.001Entities patched in 1.4.1.001Entities patched in 1.4.0.001Entities patched in 1.3.4.103Entities patched in 1.3.4.101Entities patched in 1.3.4.001Entities patched in 1.3.3.011Entities patched in 1.3.2.001Entities patched in 1.3.0.001Entities patched in 1.2.4.201Entities patched in 1.2.4.101Entities patched in 1.2.4.001Entities patched in 1.2.3.005Entities patched in 1.2.3.002Entities patched in 1.2.3.001Entities patched in 1.2.2.001Entities patched in 1.2.1.001Entities patched in 1.2.0.004Entities patched in 1.2.0.001Entities patched in 1.1.7.923Entities patched in 1.1.7.901Entities patched in 1.1.7.859Entities patched in 1.1.7.809Entities patched in 1.1.7.804Entities introduced in 1.1.7.701
+
+
+
+
+
+
+
+
+Report bad advertisement
+
+
+
+
+
+
+
+
+
+Cookies help us deliver our services. By using our services, you agree to our use of cookies.More informationOK
+
+
+
+ This page was last edited on 26 March 2026, at 16:12.
+Pages that were created prior to March 2022 are adapted from the Calamity Mod Fandom wiki.Page content is under Creative Commons Attribution-Non-Commercial-ShareAlike 3.0 License unless otherwise noted.
+
+
+Terms of Service
+Privacy policy
+Support Wiki
+Send a ticket to wiki.gg
+Status page
+Manage cookie settings
+
+
+
+
+
+
+
+
+
