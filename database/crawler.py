@@ -5,37 +5,42 @@ from collections import deque
 
 visitedPages = set()
 sitesToVisit = deque()
+linkOutputs = {}
 
 def scrapper(page, masterUrl):
-    
-    #headers = {
-    #     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-    #              "(KHTML, like Gecko) Chrome/120.0 Safari/537.36"
-    #}
-    # webPage = requests.get(page, headers=headers)
-    # soup = BeautifulSoup(webPage.text, 'html.parser')
+    import InvertedIndex as ii
     driver = webdriver.Chrome()
     driver.get(page)
     page_html = driver.page_source
     soup = BeautifulSoup(page_html, 'html.parser')
+    links = []
 
-
-    with open("links.txt", "w", encoding="utf-8") as out:
-        for link in soup.find_all('a'):
+    for link in soup.find_all('a'):
             href = link.get('href')
             if href:
-                if '#' not in href and '=' not in href and '.' not in href and ':' not in href:
-                    out.write(masterUrl + href + "\n")
+                if '#' not in href and '=' not in href and '.' not in href and ':' not in href and '%' not in href:
+                    links.append(masterUrl + href)
                     if masterUrl + href not in sitesToVisit and masterUrl + href not in visitedPages:
                         sitesToVisit.append(masterUrl + href) 
-    #print(soup.get_text())
-    with open("output.txt", "w", encoding="utf-8") as out:
-        out.write("Url: " + page + "\n")
-        out.write(soup.get_text())
-    #print(sitesToVisit)
+    
+
+    pageContent = soup.get_text()
+    pageContent = splitStrings(pageContent)
+    pageContent = ii.trimList(pageContent)
+
+    linkOutputs[page] = (links, pageContent)
     visitedPages.add(page)
+
     driver.quit()
 
+
+def splitStrings(string):
+    words = []
+    for line in string.splitlines():
+        line = line.replace("(", "").replace(")", "")
+        words_in_line = line.lower().split()
+        words.extend(words_in_line)
+    return words
 
 def crawler(numIterations, startingURL):
     if "https://" in startingURL:
@@ -47,15 +52,15 @@ def crawler(numIterations, startingURL):
     sitesToVisit.append(startingURL)
     while(currentIteration < numIterations):
         while True:
+            if not sitesToVisit:
+                break
             page = sitesToVisit.popleft()
             if(page not in visitedPages):
                 break
         scrapper(page, masterUrl)
         currentIteration = currentIteration + 1
+    
+    return linkOutputs
 
-
-        
-
-
-
-crawler(20, "https://minecraft.wiki/")
+def getDictionary():
+    return  linkOutputs
