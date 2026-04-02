@@ -5,7 +5,7 @@ document.getElementById("searchForm").addEventListener("submit", function (e) {
     const query = document.getElementById("searchInput").value;
     console.log("Searching for:", query); // debug
 
-    fetch("http://localhost:3000/search?q=text&demo=1&count=20")
+    fetch("http://search.hunt-labs.net/search?q=text&demo=1&count=20")
         .then(response => response.json())
         .then(data => {
             console.log("Data received:", data); // debug
