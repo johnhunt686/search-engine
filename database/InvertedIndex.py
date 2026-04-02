@@ -4,15 +4,16 @@ import nltk
 from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
 
-##Database Stuff
-connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
-cursor = connection.cursor()
-
 ##Globals
 all_links = []
 lancaster_stemmer = LancasterStemmer()
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
+
+if __name__ == "__main__":
+    ##Database Stuff
+    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
+    cursor = connection.cursor()
 
 ##Creates the database
 def createDatabase():
@@ -49,31 +50,47 @@ def createDatabase():
     )
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS public."Linking"(
-            "ID" integer,
-            "LinkID (source)" integer,
-            "LinkID (destination)" integer
+            "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+            "LinkID (source)" integer NOT NULL,
+            "LinkID (destination)" integer[] NOT NULL,
+            CONSTRAINT "Linking_pkey" PRIMARY KEY ("ID")
         )
         TABLESPACE pg_default;
         ALTER TABLE IF EXISTS public."Linking"
-            OWNER to postgres;"""
+        OWNER to postgres;"""
     )
     connection.commit()
 
 ##Resets the database
 def resetDatabase():
-    cursor.execute('TRUNCATE TABLE "InvertedIndex", "Links" RESTART IDENTITY CASCADE;')
+    cursor.execute('TRUNCATE TABLE "InvertedIndex", "Links", "Linking" RESTART IDENTITY CASCADE;')
+    connection.commit()
+
+##Puts the relationships between links into the database
+def linking_into_database(dictionary):
+    link_to_id = links_to_ids()
+    
+    data = []
+    for page, (links, pageContent) in dictionary.items():
+        page_id = link_to_id[page]
+        link_ids = [link_to_id[link] for link in links if link in link_to_id]
+        data.append((page_id, link_ids))
+
+    ##Queries data into the database
+    cursor.executemany("""
+            INSERT INTO "Linking" ("LinkID (source)", "LinkID (destination)") 
+            VALUES (%s, %s)
+            ON CONFLICT DO NOTHING;""",
+            data
+        )
     connection.commit()
 
 ##Puts the inverted index into the database. (Columns: Word, ID[])
 def words_into_database(dictionary):
-    ##Makes a map for linhks and their ID
+    ##Makes a map for links and their ID
     inverted_index = InvertedIndex(dictionary)
-    cursor.execute("""
-                   SELECT "ID", "Link"
-                   FROM "Links";"""
-                   )
-    link_to_id = {Link: ID for ID, Link in cursor.fetchall()}
-    
+    link_to_id = links_to_ids()
+
     ##Data is a list of words and their IDs
     data = []
     for word, links in inverted_index.items():
@@ -126,6 +143,13 @@ def links_into_database(dictionary):
 
     connection.commit()
 
+def links_to_ids():
+    cursor.execute("""
+                   SELECT "ID", "Link"
+                   FROM "Links";"""
+                   )
+    return {Link: ID for ID, Link in cursor.fetchall()}
+
 ##Stems a list of words
 def documentStemmer(list):
     return [lancaster_stemmer.stem(word) for word in list]
@@ -146,16 +170,19 @@ def removeDuplicates(list):
 def main():
     import crawler as c
     createDatabase()
+
 ##Main Program
 def main():
-    import crawler as c
+    from crawler import crawler
     resetDatabase()
-    dictionary = c.crawler(2, "https://minecraft.wiki/")
+    dictionary = crawler(20, "https://minecraft.wiki/")
     links_into_database(dictionary)
     words_into_database(dictionary)
+    linking_into_database(dictionary)
 
     connection.close()
     cursor.close()
     return
 
-main()
+if __name__ == "__main__":
+    main()
