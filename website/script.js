@@ -5,7 +5,7 @@ document.getElementById("searchForm").addEventListener("submit", function (e) {
     const query = document.getElementById("searchInput").value;
     console.log("Searching for:", query); // debug
 
-    const baseUrl = window.location.hostname === 'search-engine' ? window.location.origin : 'http://localhost:3000';
+    const baseUrl = window.location.hostname === 'debian' ? window.location.origin : 'http://localhost:3000';
     fetch(`${baseUrl}/search?q=${encodeURIComponent(query)}&demo=1&count=20`)
         .then(response => response.json())
         .then(data => {
