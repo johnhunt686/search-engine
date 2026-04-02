@@ -14,6 +14,52 @@ lancaster_stemmer = LancasterStemmer()
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
+##Creates the database
+def createDatabase():
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS public."InvertedIndex"(
+            "Word" text COLLATE pg_catalog."default" NOT NULL,
+            "Links" integer[] NOT NULL,
+            CONSTRAINT "InvertedIndex_pkey" PRIMARY KEY ("Word")
+        )
+        TABLESPACE pg_default;
+        ALTER TABLE IF EXISTS public."InvertedIndex"
+            OWNER to postgres;"""
+    )
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS public."Links"(
+            "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+            "Link" text COLLATE pg_catalog."default"
+        )   
+        TABLESPACE pg_default;
+        ALTER TABLE IF EXISTS public."Links"
+        OWNER to postgres;"""
+    )
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS public."LinkWeight"(
+            "ID" integer,
+            "linkID" integer,
+            "In-count" integer,
+            "Out-count" integer,
+            "Weight Ratio" real
+        )
+        TABLESPACE pg_default;
+        ALTER TABLE IF EXISTS public."LinkWeight"
+            OWNER to postgres;"""
+    )
+    cursor.execute("""
+        CREATE TABLE IF NOT EXISTS public."Linking"(
+            "ID" integer,
+            "LinkID (source)" integer,
+            "LinkID (destination)" integer
+        )
+        TABLESPACE pg_default;
+        ALTER TABLE IF EXISTS public."Linking"
+            OWNER to postgres;"""
+    )
+    connection.commit()
+
+##Resets the database
 def resetDatabase():
     cursor.execute('TRUNCATE TABLE "InvertedIndex", "Links" RESTART IDENTITY CASCADE;')
     connection.commit()
@@ -96,6 +142,10 @@ def removeStopWords(list):
 def removeDuplicates(list):
     return sorted(set(list), key=lambda x:list.index(x))
 
+##Main Program
+def main():
+    import crawler as c
+    createDatabase()
 ##Main Program
 def main():
     import crawler as c
