@@ -25,6 +25,10 @@ Makefile
 *.dll
 *.dylib
 
+#python venv
+/database/venv/
+/database/__pycache__/
+
 #Debug symbols
 *.pdb
 
@@ -37,3 +41,4 @@ Makefile
 #Windows
 Thumbs.db
 src/search_engine
+

@@ -1,3 +1,9 @@
+Install BeautifulSoup4:
+py -m pip install beautifulsoup4
+
+Install Selenium:
+pip install -U selenium
+
 Installing NLTK Package
 
 Terminal
@@ -20,7 +26,7 @@ Install PostgreSQL
 	Database Drivers: psqlODBC (64 bit) v13.02.0000-1
 	Database Server: v18.3-2 (Should already be installed)
 
-Install pgAdmin4
+Install pgAdmin4 (This should automatically come with PostgreSQL so you shouldn't have to do this)
 - https://www.pgadmin.org/download/ (Choose Windows unless you are John)
 - Open this probably. You can test connection to your database.
 

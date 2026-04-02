@@ -5,7 +5,7 @@ const app = express();
 const PORT = 8080;
 
 app.get("/search", (req, res) => {
-    const { q, setting1, setting2, setting3 } = req.query;
+    const { q, demo, count } = req.query;
 
     if (!q) {
         return res.status(400).json({ error: "Missing query" });
@@ -14,9 +14,8 @@ app.get("/search", (req, res) => {
     // Build arguments in key=value format
     const args = [`query=${q}`];
 
-    if (setting1) args.push(`setting1=${setting1}`);
-    if (setting2) args.push(`setting2=${setting2}`);
-    if (setting3) args.push(`setting3=${setting3}`);
+    if (demo) args.push(`demo=${demo}`);
+    if (count) args.push(`count=${count}`);
 
     execFile("./build/SearchEngine", args, (err, stdout, stderr) => {
         if (err) {
