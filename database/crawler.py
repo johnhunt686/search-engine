@@ -8,7 +8,7 @@ sitesToVisit = deque()
 linkOutputs = {}
 
 def scrapper(page, masterUrl):
-    import InvertedIndex as ii
+    from InvertedIndex import trimList
     driver = webdriver.Chrome()
     driver.get(page)
     page_html = driver.page_source
@@ -26,7 +26,7 @@ def scrapper(page, masterUrl):
 
     pageContent = soup.get_text()
     pageContent = splitStrings(pageContent)
-    pageContent = ii.trimList(pageContent)
+    pageContent = trimList(pageContent)
 
     linkOutputs[page] = (links, pageContent)
     visitedPages.add(page)
