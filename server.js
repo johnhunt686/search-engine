@@ -1,8 +1,10 @@
-const express = require("express");
-const { execFile } = require("child_process");
-
+import cors from "cors";
+import express from "express";
+import { execFile } from "child_process";
 const app = express();
-const PORT = 8080;
+const PORT = 3000;
+
+app.use(cors());
 
 app.get("/search", (req, res) => {
     const { q, demo, count } = req.query;
@@ -35,5 +37,5 @@ app.get("/search", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://localhost:${3000}`);
 });
