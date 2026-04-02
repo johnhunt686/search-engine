@@ -168,11 +168,6 @@ def removeDuplicates(list):
 
 ##Main Program
 def main():
-    import crawler as c
-    createDatabase()
-
-##Main Program
-def main():
     from crawler import crawler
     resetDatabase()
     dictionary = crawler(20, "https://minecraft.wiki/")
