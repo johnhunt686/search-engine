@@ -15,6 +15,12 @@ if __name__ == "__main__":
     connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
     cursor = connection.cursor()
 
+def deleteTables():
+    cursor.execute("""
+        DROP TABLE "InvertedIndex", "Links", "Linking", "LinkWeights" CASCADE;"""
+        )
+    connection.commit()
+
 ##Creates the database
 def createDatabase():
     cursor.execute("""
@@ -51,7 +57,7 @@ def createDatabase():
     cursor.execute("""
         CREATE TABLE IF NOT EXISTS public."Linking"(
             "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-            "LinkID (source)" integer NOT NULL,
+            "LinkID (source)" integer NOT NULL UNIQUE,
             "LinkID (destination)" integer[] NOT NULL,
             CONSTRAINT "Linking_pkey" PRIMARY KEY ("ID")
         )
@@ -80,7 +86,7 @@ def linking_into_database(dictionary):
     cursor.executemany("""
             INSERT INTO "Linking" ("LinkID (source)", "LinkID (destination)") 
             VALUES (%s, %s)
-            ON CONFLICT DO NOTHING;""",
+            ON CONFLICT ("LinkID (source)") DO NOTHING;""",
             data
         )
     connection.commit()
@@ -169,8 +175,10 @@ def removeDuplicates(list):
 ##Main Program
 def main():
     from crawler import crawler
-    resetDatabase()
-    dictionary = crawler(20, "https://minecraft.wiki/")
+    ##deleteTables()
+    createDatabase()
+    ##resetDatabase()
+    dictionary = crawler(5, "https://minecraft.wiki/")
     links_into_database(dictionary)
     words_into_database(dictionary)
     linking_into_database(dictionary)
