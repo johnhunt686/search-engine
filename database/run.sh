@@ -1,3 +1,3 @@
 #!/bin/bash
-./venv/bin/activate
+source /venv/bin/activate
 python3 InvertedIndex.py
