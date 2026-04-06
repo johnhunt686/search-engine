@@ -12,6 +12,24 @@ const server = http.createServer((req, res) => {
   const url = req.url.split('?')[0];
   let filePath;
 
+  if (url.startsWith('/search')) {
+    const proxyReq = http.request(
+      {
+        hostname: 'localhost',
+        port: 3000,
+        path: req.url,
+        method: req.method,
+      },
+      (proxyRes) => {
+        res.writeHead(proxyRes.statusCode, proxyRes.headers);
+        proxyRes.pipe(res, { end: true });
+      }
+    );
+
+    req.pipe(proxyReq, { end: true });
+    return;
+  }
+
   if (url === '/' || url === '/index.html') {
     filePath = path.join(__dirname, 'index.html');
   } else if (url === '/style.css') {
