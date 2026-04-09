@@ -5,7 +5,7 @@ document.getElementById("searchForm").addEventListener("submit", function (e) {
     const query = document.getElementById("searchInput").value;
     console.log("Searching for:", query); // debug
 
-    fetch(`/search?q=${encodeURIComponent(query)}&demo=1&count=20`)
+    fetch(`/search?q=${encodeURIComponent(query)}&count=20`)
         .then(response => response.json())
         .then(data => {
             console.log("Data received:", data); // debug
