@@ -1,21 +1,37 @@
 #!/bin/bash
 
-set -e
+set -e  # stop on error
 
-# Install PostgreSQL + ODBC
-sudo apt update
-sudo apt install -y postgresql postgresql-contrib odbc-postgresql
+echo "=== System update ==="
+sudo apt update && sudo apt upgrade -y
 
-# Set port to 41204
-PG_CONF=$(sudo find /etc/postgresql -name postgresql.conf)
-sudo sed -i "s/^#port = 5432/port = 41204/" "$PG_CONF"
+echo "=== Install PostgreSQL ==="
+sudo apt install -y postgresql postgresql-contrib
 
-# Ensure peer auth for postgres user
-PG_HBA=$(sudo find /etc/postgresql -name pg_hba.conf)
-sudo sed -i "s/^local\s\+all\s\+postgres\s\+.*/local all postgres peer/" "$PG_HBA"
+echo "=== Start PostgreSQL ==="
+sudo systemctl enable postgresql
+sudo systemctl start postgresql
 
-# Restart PostgreSQL
-sudo systemctl restart postgresql
+echo "=== Configure PostgreSQL ==="
 
-# Set password (run from accessible dir)
-sudo -u postgres bash -c "cd /tmp && psql -U postgres -c \"ALTER USER postgres WITH PASSWORD '1234';\""
+sudo -u postgres psql <<EOF
+ALTER USER postgres WITH PASSWORD '1234';
+CREATE DATABASE "SearchEngine";
+EOF
+
+echo "=== PostgreSQL ready (default port 5432) ==="
+
+echo "=== Create Python virtual environment (if needed) ==="
+if [ ! -d "venv" ]; then
+    python3 -m venv venv
+fi
+
+echo "=== Activate venv ==="
+source venv/bin/activate
+
+echo "=== Install dependencies ==="
+pip install --upgrade pip
+pip install -r requirements.txt
+
+echo "=== Download NLTK data ==="
+python3 -m nltk.downloader popular

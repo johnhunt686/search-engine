@@ -1,4 +1,4 @@
 beautifulsoup4
 selenium
 nltk
-psycopg2
+psycopg2-binary

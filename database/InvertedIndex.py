@@ -12,60 +12,64 @@ stop_words = set(stopwords.words('english'))
 
 if __name__ == "__main__":
     ##Database Stuff
-    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
+    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=5432)
     cursor = connection.cursor()
 
 def deleteTables():
     cursor.execute("""
-        DROP TABLE "InvertedIndex", "Links", "Linking", "LinkWeights" CASCADE;"""
-        )
+        DROP TABLE IF EXISTS "InvertedIndex", "Links", "Linking", "LinkWeight" CASCADE;"""
+    )
     connection.commit()
 
 ##Creates the database
 def createDatabase():
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS public."InvertedIndex"(
-            "Word" text COLLATE pg_catalog."default" NOT NULL,
-            "Links" integer[] NOT NULL,
-            CONSTRAINT "InvertedIndex_pkey" PRIMARY KEY ("Word")
+    try:
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS public."InvertedIndex"(
+                "Word" text COLLATE pg_catalog."default" NOT NULL,
+                "Links" integer[] NOT NULL,
+                CONSTRAINT "InvertedIndex_pkey" PRIMARY KEY ("Word")
+            )
+            TABLESPACE pg_default;
+            ALTER TABLE IF EXISTS public."InvertedIndex"
+                OWNER to postgres;"""
         )
-        TABLESPACE pg_default;
-        ALTER TABLE IF EXISTS public."InvertedIndex"
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS public."Links"(
+                "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                "Link" text COLLATE pg_catalog."default"
+            )   
+            TABLESPACE pg_default;
+            ALTER TABLE IF EXISTS public."Links"
             OWNER to postgres;"""
-    )
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS public."Links"(
-            "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-            "Link" text COLLATE pg_catalog."default"
-        )   
-        TABLESPACE pg_default;
-        ALTER TABLE IF EXISTS public."Links"
-        OWNER to postgres;"""
-    )
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS public."LinkWeight"(
-            "ID" integer,
-            "linkID" integer,
-            "In-count" integer,
-            "Out-count" integer,
-            "Weight Ratio" real
         )
-        TABLESPACE pg_default;
-        ALTER TABLE IF EXISTS public."LinkWeight"
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS public."LinkWeight"(
+                "ID" integer,
+                "linkID" integer,
+                "In-count" integer,
+                "Out-count" integer,
+                "Weight Ratio" real
+            )
+            TABLESPACE pg_default;
+            ALTER TABLE IF EXISTS public."LinkWeight"
+                OWNER to postgres;"""
+        )
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS public."Linking"(
+                "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
+                "LinkID (source)" integer NOT NULL UNIQUE,
+                "LinkID (destination)" integer[] NOT NULL,
+                CONSTRAINT "Linking_pkey" PRIMARY KEY ("ID")
+            )
+            TABLESPACE pg_default;
+            ALTER TABLE IF EXISTS public."Linking"
             OWNER to postgres;"""
-    )
-    cursor.execute("""
-        CREATE TABLE IF NOT EXISTS public."Linking"(
-            "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-            "LinkID (source)" integer NOT NULL UNIQUE,
-            "LinkID (destination)" integer[] NOT NULL,
-            CONSTRAINT "Linking_pkey" PRIMARY KEY ("ID")
         )
-        TABLESPACE pg_default;
-        ALTER TABLE IF EXISTS public."Linking"
-        OWNER to postgres;"""
-    )
-    connection.commit()
+        connection.commit()
+    except Exception as e:
+        print(f"Error creating tables: {e}")
+        connection.rollback()
 
 ##Resets the database
 def resetDatabase():

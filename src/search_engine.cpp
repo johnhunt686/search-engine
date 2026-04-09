@@ -89,13 +89,16 @@ int main(int argc, char* argv[])
         return 0;
     }
 
-    std::cout << "{ \"results\": [";
-    for (size_t i = 0; i < result.size(); ++i) {
-        std::cout << "\"" << escape_json(result[i]) << "\"";
-        if (i + 1 < result.size()) std::cout << ",";
+    std::cout << "{ \"results\": {";
+    for (int i = 0; i < result.size(); ++i) {
+        std::cout << "\"result" << i << "\": {";
+        std::cout << "\"title\": \"Result " << (i+1) << "\",";
+        std::cout << "\"link\": \"" << result[i] << "\",";
+        std::cout << "\"description\": \"Placeholder description for item " << (i+1) << "\"";
+        std::cout << "}";
+        if (i +1 < result.size()) std::cout << ",";
     }
-    std::cout << "] }";
-
+    std::cout << "} }";
     return 0;
 }
 
@@ -122,20 +125,43 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         term = stem(term);
     }
 
-    //query synonym engine
 
-    //query initial query TOP <results>
-    /*
-    select *
-    from index
-    left join links on (index.linkID = links.linkID)
-    left join linkWeights on (links.linkID = linkWeights.linkID)
-    WHERE <result> IN Index.term
-    ORDER BY linkWeights.linkWeight DESC;
-    */
-    
-    //TESTING DO NOT LEAVE
-    results = terms;
+    try {
+        pqxx::connection C("dbname=SearchEngine user=postgres password=1234 hostaddr=127.0.0.1 port=5432");
+        if (C.is_open()) {
+            //std::cout << "Opened database successfully: " << C.dbname() << std::endl;
+        } else {
+            std::cerr << "Can't open database" << std::endl;
+            return 1;
+        }
+
+        pqxx::work W(C);
+        std::stringstream sqlStream;
+
+        //inverted index sub-query vvv
+        sqlStream << "SELECT \"Link\" FROM public.\"InvertedIndex\" ii JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id WHERE ii.\"Word\" IN (";
+
+        for (size_t i = 0; i < terms.size(); ++i) {
+            if (i > 0) sqlStream << ", ";
+            sqlStream << "'" << terms[i] << "'";
+        }
+
+        sqlStream << ") LIMIT " << count;
+        //inverted index sub-query ^^^
+
+
+        std::string sql = sqlStream.str();
+        pqxx::result R(W.exec(sql));
+
+        for (auto row : R) {
+            results.push_back(row[0].c_str());
+        }
+
+        W.commit();
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
 
    
     return 0;
