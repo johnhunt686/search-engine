@@ -27,8 +27,11 @@ def scrapper(page, masterUrl):
     pageContent = soup.get_text()
     pageContent = splitStrings(pageContent)
     pageContent = trimList(pageContent)
+    pageTitle = soup.title.string
 
-    linkOutputs[page] = (links, pageContent)
+    print(soup.title.name())
+
+    linkOutputs[page] = (links, pageContent, pageTitle)
     visitedPages.add(page)
 
     driver.quit()
@@ -64,3 +67,4 @@ def crawler(numIterations, startingURL):
 
 def getDictionary():
     return  linkOutputs
+
