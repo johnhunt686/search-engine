@@ -8,10 +8,10 @@ cmake -S . -B build
 cmake --build build
 
 cd database
-echo installing python dependencies
+echo "installing python dependencies"
 ./install.sh
 
-echo installing postgresql
+echo "installing postgresql"
 ./install_postgresql.sh
 
 echo "installation complete"

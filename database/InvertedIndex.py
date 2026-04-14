@@ -25,35 +25,43 @@ def deleteTables():
 def createDatabase():
     try:
         cursor.execute("""
-            CREATE TABLE IF NOT EXISTS public."InvertedIndex"(
-                "Word" text COLLATE pg_catalog."default" NOT NULL,
-                "Links" integer[] NOT NULL,
-                CONSTRAINT "InvertedIndex_pkey" PRIMARY KEY ("Word")
+            CREATE OR REPLACE VIEW public."LinkWeight" AS
+            WITH edges AS (
+                SELECT
+                    l."LinkID (source)" AS source,
+                    unnest(l."LinkID (destination)") AS destination
+                FROM public."Linking" l
+            ),
+
+            out_counts AS (
+                SELECT
+                    source AS id,
+                    COUNT(*) AS "Out-count"
+                FROM edges
+                GROUP BY source
+            ),
+
+            in_counts AS (
+                SELECT
+                    destination AS id,
+                    COUNT(*) AS "In-count"
+                FROM edges
+                GROUP BY destination
             )
-            TABLESPACE pg_default;
-            ALTER TABLE IF EXISTS public."InvertedIndex"
-                OWNER to postgres;"""
-        )
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS public."Links"(
-                "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-                "Link" text COLLATE pg_catalog."default"
-            )   
-            TABLESPACE pg_default;
-            ALTER TABLE IF EXISTS public."Links"
-            OWNER to postgres;"""
-        )
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS public."LinkWeight"(
-                "ID" integer,
-                "linkID" integer,
-                "In-count" integer,
-                "Out-count" integer,
-                "Weight Ratio" real
-            )
-            TABLESPACE pg_default;
-            ALTER TABLE IF EXISTS public."LinkWeight"
-                OWNER to postgres;"""
+
+            SELECT
+                COALESCE(o.id, i.id) AS "ID",
+                COALESCE(o."Out-count", 0) AS "Out-count",
+                COALESCE(i."In-count", 0) AS "In-count",
+
+                LN(1 + COALESCE(i."In-count", 0)) 
+                - LN(1 + COALESCE(o."Out-count", 0)) 
+                AS "Weight Score"
+
+            FROM out_counts o
+            FULL OUTER JOIN in_counts i
+            ON o.id = i.id;
+            """
         )
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS public."Linking"(

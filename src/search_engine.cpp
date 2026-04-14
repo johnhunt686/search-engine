@@ -122,7 +122,9 @@ int search(std::string* query, std::vector<std::string>& results , int count){
 
     // Stem the terms
     for (auto& term : terms) {
-        term = stem(term);
+        //term = stem(term);
+        //disable stem for now
+        term = term;
     }
 
 
@@ -139,7 +141,16 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         std::stringstream sqlStream;
 
         //inverted index sub-query vvv
-        sqlStream << "SELECT \"Link\" FROM public.\"InvertedIndex\" ii JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id WHERE ii.\"Word\" IN (";
+        /*
+            SELECT DISTINCT \"Link\"
+            FROM public.\"InvertedIndex\" ii 
+            JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id 
+            WHERE ii.\"Word\" IN (
+            <<<dynamic term insertion>>>
+            ) LIMIT <<<count>>>
+        */
+
+        sqlStream << "SELECT DISTINCT \"Link\" FROM public.\"InvertedIndex\" ii JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id WHERE ii.\"Word\" IN (";
 
         for (size_t i = 0; i < terms.size(); ++i) {
             if (i > 0) sqlStream << ", ";
