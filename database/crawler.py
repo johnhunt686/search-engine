@@ -7,9 +7,9 @@ visitedPages = set()
 sitesToVisit = deque()
 linkOutputs = {}
 
-def scrapper(page, masterUrl):
+def scrapper(page, masterUrl, driver):
     from InvertedIndex import trimList
-    driver = webdriver.Chrome()
+    
     driver.get(page)
     page_html = driver.page_source
     soup = BeautifulSoup(page_html, 'html.parser')
@@ -29,12 +29,18 @@ def scrapper(page, masterUrl):
     pageContent = trimList(pageContent)
     pageTitle = soup.title.string
 
-    print(soup.title.name)
+    firstParagraph = ""
+    paragraph = soup.find_all("p")
+    for p in paragraph:
+        firstParagraph = p.get_text(separator = " ", strip = True)
+        if firstParagraph and len(firstParagraph) > 200:
+            break
 
-    linkOutputs[page] = (links, pageContent, pageTitle)
+
+    linkOutputs[page] = (links, pageContent, pageTitle, firstParagraph)
     visitedPages.add(page)
 
-    driver.quit()
+
 
 
 def splitStrings(string):
@@ -53,6 +59,7 @@ def crawler(numIterations, startingURL):
         startingURL = "https://" + startingURL
     currentIteration = 0
     sitesToVisit.append(startingURL)
+    driver = webdriver.Chrome()
     while(currentIteration < numIterations):
         while True:
             if not sitesToVisit:
@@ -60,11 +67,11 @@ def crawler(numIterations, startingURL):
             page = sitesToVisit.popleft()
             if(page not in visitedPages):
                 break
-        scrapper(page, masterUrl)
+        scrapper(page, masterUrl, driver)
         currentIteration = currentIteration + 1
     
+    driver.quit()
     return linkOutputs
 
 def getDictionary():
     return  linkOutputs
-
