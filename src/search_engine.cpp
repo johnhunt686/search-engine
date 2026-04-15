@@ -7,7 +7,11 @@
 #include <cctype>
 #include <sstream>
 
-
+struct SearchResult {
+    std::string link;
+    std::string title;
+    std::string description;
+};
 
 int main(int argc, char* argv[])
 {
@@ -53,7 +57,7 @@ int main(int argc, char* argv[])
             return -1;
         }
     }
-    std::vector<std::string> result;
+    std::vector<SearchResult> result;
     search(&query, result, count);
 
     auto escape_json = [](const std::string& s){
@@ -92,9 +96,9 @@ int main(int argc, char* argv[])
     std::cout << "{ \"results\": {";
     for (int i = 0; i < result.size(); ++i) {
         std::cout << "\"result" << i << "\": {";
-        std::cout << "\"title\": \"Result " << (i+1) << "\",";
-        std::cout << "\"link\": \"" << result[i] << "\",";
-        std::cout << "\"description\": \"Placeholder description for item " << (i+1) << "\"";
+        std::cout << "\"title\": \"" << escape_json(result[i].title) << "\",";
+        std::cout << "\"link\": \"" << escape_json(result[i].link) << "\",";
+        std::cout << "\"description\": \"" << escape_json(result[i].description) << "\"";
         std::cout << "}";
         if (i +1 < result.size()) std::cout << ",";
     }
@@ -102,7 +106,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-int search(std::string* query, std::vector<std::string>& results , int count){
+int search(std::string* query, std::vector<SearchResult>& results , int count){
     std::vector<std::string> stopWords = {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"};
     //seperate query into an array of words
     std::vector<std::string> terms;
@@ -208,8 +212,8 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         FROM aggregated a
         LEFT JOIN public."LinkWeight" lw
             ON a."LinkID" = lw."ID"
-        LEFT JOIN public.REPLACE_TABLE rt
-            ON a."LinkID" = rt."LinkID"
+        LEFT JOIN public."SearchedLinkInfo" sli
+            ON a."LinkID" = sli."LinkID"
 
         ORDER BY final_score DESC
         LIMIT )" << count << ";";
@@ -219,7 +223,26 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         pqxx::result R = W.exec(sql);
 
         for (auto row : R) {
-            results.push_back(row[0].c_str());
+            SearchResult r;
+
+            // Column 0: Link (guaranteed NOT NULL due to WHERE clause)
+            r.link = row[0].c_str();
+
+            // Column 1: title
+            if (row[1].is_null() || std::string(row[1].c_str()).empty()) {
+                r.title = r.link; // fallback
+            } else {
+                r.title = row[1].c_str();
+            }
+
+            // Column 2: description
+            if (row[2].is_null()) {
+                r.description = "";
+            } else {
+                r.description = row[2].c_str();
+            }
+
+            results.push_back(r);
         }
 
         W.commit();
