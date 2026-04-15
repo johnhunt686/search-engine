@@ -1,12 +1,17 @@
 #ifndef SEARCH_ENGINE_H
 #define SEARCH_ENGINE_H
+#pragma once
 
 #include <string>
 #include <vector>
 
-// Processes the query and fills the results vector with terms.
-// Returns 0 on success or non-zero on error.
-int search(std::string* query, std::vector<SearchResult>& results , int count){}
+struct SearchResult {
+    std::string link;
+    std::string title;
+    std::string description;
+};
+
+int search(std::string* query, std::vector<SearchResult>& results , int count);
 
 std::string stem(std::string word);
 
