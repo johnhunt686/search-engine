@@ -197,7 +197,7 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
         )
 
         SELECT
-            a."LinkID",
+            l."Link",
             sli."Title",
             sli."Description",
             a.text_score,
@@ -205,6 +205,9 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
             a.text_score * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
 
         FROM aggregated a
+        
+        LEFT JOIN public."Links" l
+            ON a."LinkID" = l."ID"
         LEFT JOIN public."LinkWeight" lw
             ON a."LinkID" = lw."ID"
         LEFT JOIN public."SearchedLinkInfo" sli
