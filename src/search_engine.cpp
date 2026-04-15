@@ -198,8 +198,8 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
 
         SELECT
             a."LinkID",
-            rt.title,
-            rt.description,
+            sli."Title",
+            sli."Description",
             a.text_score,
             COALESCE(lw."Weight Score", 0) AS weight_score,
             a.text_score * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
