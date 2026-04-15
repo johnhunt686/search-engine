@@ -5,6 +5,7 @@ from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
 
 ##Globals
+links_to_search = 5
 all_links = []
 lancaster_stemmer = LancasterStemmer()
 nltk.download('stopwords')
@@ -17,7 +18,7 @@ if __name__ == "__main__":
 
 def deleteTables():
     cursor.execute("""
-        DROP TABLE IF EXISTS "InvertedIndex", "Links", "Linking", "LinkWeight" CASCADE;"""
+        DROP TABLE IF EXISTS "InvertedIndex", "Links", "Linking", "LinkWeight", "SearchedLinkInfo" CASCADE;"""
     )
     connection.commit()
 
@@ -33,8 +34,10 @@ def createDatabase():
             )
             TABLESPACE pg_default;
             ALTER TABLE IF EXISTS public."InvertedIndex"
-                OWNER to postgres;"""
+                OWNER to postgres;"""             
         )
+        cursor.execute("""CREATE INDEX IF NOT EXISTS idx_inverted_word ON public."InvertedIndex"("Word");""")
+        cursor.execute("""CREATE INDEX IF NOT EXISTS idx_inverted_linkid ON public."InvertedIndex"("Word");""")
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS public."Links"(
                 "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
@@ -43,18 +46,6 @@ def createDatabase():
             TABLESPACE pg_default;
             ALTER TABLE IF EXISTS public."Links"
             OWNER to postgres;"""
-        )
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS public."LinkWeight"(
-                "ID" integer,
-                "linkID" integer,
-                "In-count" integer,
-                "Out-count" integer,
-                "Weight Ratio" real
-            )
-            TABLESPACE pg_default;
-            ALTER TABLE IF EXISTS public."LinkWeight"
-                OWNER to postgres;"""
         )
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS public."Linking"
@@ -69,7 +60,19 @@ def createDatabase():
             ALTER TABLE IF EXISTS public."Linking"
             OWNER to postgres;"""
         )
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS public."SearchedLinkInfo"
+            (
+                "LinkID" integer NOT NULL PRIMARY KEY,
+                "Title" text COLLATE pg_catalog."default",
+                "Description" text COLLATE pg_catalog."default"
+            )
+            TABLESPACE pg_default;
+            ALTER TABLE IF EXISTS public."SearchedLinkInfo"
+            OWNER to postgres;"""
+        )
         connection.commit()
+
 
     except Exception as e:
         print(f"Error creating tables: {e}")
@@ -77,7 +80,34 @@ def createDatabase():
 
 ##Resets the database
 def resetDatabase():
-    cursor.execute('TRUNCATE TABLE "InvertedIndex", "Links", "Linking" RESTART IDENTITY CASCADE;')
+    cursor.execute('TRUNCATE TABLE "InvertedIndex", "Links", "Linking", "SearchedLinkInfo" RESTART IDENTITY CASCADE;')
+    connection.commit()
+
+def linkInfo_into_database(dictionary):
+    link_to_id = links_to_ids()
+
+    data = []
+    for page, (links, pageContent, pageTitle) in dictionary.items():
+        if page not in link_to_id:
+            continue
+
+        link_id = link_to_id[page]
+
+        if isinstance(pageContent, list):
+            description = " ".join(pageContent[:40])
+        else:
+            description = str(pageContent)[:300]
+
+        title = pageTitle if pageTitle else None
+        data.append((link_id, title, description))
+    
+    cursor.executemany("""
+        INSERT INTO "SearchedLinkInfo" ("LinkID", "Title", "Description")
+        VALUES (%s, %s, %s)
+        ON CONFLICT ("LinkID") DO UPDATE
+        SET "Title" = EXCLUDED."Title",
+            "Description" = EXCLUDED."Description";
+    """, data)
     connection.commit()
 
 ##Puts the relationships between links into the database
@@ -204,7 +234,7 @@ def removeStopWords(list):
 
 ##Removes duplicates from a list
 ##def removeDuplicates(list):
-    return sorted(set(list), key=lambda x:list.index(x))
+    ##return sorted(set(list), key=lambda x:list.index(x))
 
 def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, title_weight=8):
     query_words = documentStemmer(query.lower().split())
@@ -255,13 +285,16 @@ def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, titl
 ##Main Program
 def main():
     from crawler import crawler
+    dictionary = {}
     deleteTables()
     createDatabase()
     resetDatabase()
-    dictionary = crawler(5, "https://minecraft.wiki/")
-    links_into_database(dictionary)
-    words_into_database(dictionary)
-    linking_into_database(dictionary)
+    for i in range(links_to_search):
+        dictionary.update(crawler(1, "https://minecraft.wiki/"))
+        links_into_database(dictionary)
+        words_into_database(dictionary)
+        linking_into_database(dictionary)
+        linkInfo_into_database(dictionary)
 
     print(rank_links("Minecraft", dictionary, getInvertedIndex(), getLinking()))
 
