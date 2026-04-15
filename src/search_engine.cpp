@@ -140,29 +140,83 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         pqxx::work W(C);
         std::stringstream sqlStream;
 
-        //inverted index sub-query vvv
-        /*
-            SELECT DISTINCT \"Link\"
-            FROM public.\"InvertedIndex\" ii 
-            JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id 
-            WHERE ii.\"Word\" IN (
-            <<<dynamic term insertion>>>
-            ) LIMIT <<<count>>>
-        */
-
-        sqlStream << "SELECT DISTINCT \"Link\" FROM public.\"InvertedIndex\" ii JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id WHERE ii.\"Word\" IN (";
-
+        // --- Build word list ---
+        std::stringstream wordList;
         for (size_t i = 0; i < terms.size(); ++i) {
-            if (i > 0) sqlStream << ", ";
-            sqlStream << "'" << terms[i] << "'";
+            if (i > 0) wordList << ", ";
+            wordList << "'" << terms[i] << "'";
         }
 
-        sqlStream << ") LIMIT " << count;
-        //inverted index sub-query ^^^
+        // --- Main SQL ---
+        sqlStream << R"(
+        WITH query_words AS (
+            SELECT UNNEST(ARRAY[
+        )" << wordList.str() << R"(
+            ]) AS word
+        ),
 
+        total_docs AS (
+            SELECT COUNT(DISTINCT "LinkID") AS N
+            FROM public."InvertedIndex"
+        ),
 
+        doc_freq AS (
+            SELECT 
+                ii."Word",
+                COUNT(DISTINCT ii."LinkID") AS df
+            FROM public."InvertedIndex" ii
+            JOIN query_words qw
+                ON ii."Word" = qw.word
+            GROUP BY ii."Word"
+        ),
+
+        bm25_scores AS (
+            SELECT
+                ii."LinkID",
+                ii."Word",
+                ii."Frequency",
+                df.df,
+                td.N,
+
+                LN(td.N::real / df.df) *
+                (ii."Frequency"::real / (ii."Frequency" + 1.2)) AS bm25_term
+
+            FROM public."InvertedIndex" ii
+            JOIN query_words qw
+                ON ii."Word" = qw.word
+            JOIN doc_freq df
+                ON ii."Word" = df."Word"
+            CROSS JOIN total_docs td
+        ),
+
+        aggregated AS (
+            SELECT
+                "LinkID",
+                SUM(bm25_term) AS text_score
+            FROM bm25_scores
+            GROUP BY "LinkID"
+        )
+
+        SELECT
+            a."LinkID",
+            rt.title,
+            rt.description,
+            a.text_score,
+            COALESCE(lw."Weight Score", 0) AS weight_score,
+            a.text_score * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
+
+        FROM aggregated a
+        LEFT JOIN public."LinkWeight" lw
+            ON a."LinkID" = lw."ID"
+        LEFT JOIN public.REPLACE_TABLE rt
+            ON a."LinkID" = rt."LinkID"
+
+        ORDER BY final_score DESC
+        LIMIT )" << count << ";";
+
+        // --- Execute ---
         std::string sql = sqlStream.str();
-        pqxx::result R(W.exec(sql));
+        pqxx::result R = W.exec(sql);
 
         for (auto row : R) {
             results.push_back(row[0].c_str());
