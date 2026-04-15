@@ -5,6 +5,7 @@ from nltk.stem import LancasterStemmer
 from nltk.corpus import stopwords
 
 ##Globals
+link_to_id_cache = {}
 links_to_search = 5
 all_links = []
 lancaster_stemmer = LancasterStemmer()
@@ -41,7 +42,7 @@ def createDatabase():
         cursor.execute("""
             CREATE TABLE IF NOT EXISTS public."Links"(
                 "ID" integer NOT NULL GENERATED ALWAYS AS IDENTITY ( INCREMENT 1 START 1 MINVALUE 1 MAXVALUE 2147483647 CACHE 1 ),
-                "Link" text COLLATE pg_catalog."default"
+                "Link" text COLLATE pg_catalog."default" UNIQUE
             )   
             TABLESPACE pg_default;
             ALTER TABLE IF EXISTS public."Links"
@@ -122,14 +123,14 @@ def resetDatabase():
     connection.commit()
 
 def linkInfo_into_database(dictionary):
-    link_to_id = links_to_ids()
+    global link_to_id_cache
 
     data = []
     for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
-        if page not in link_to_id:
+        if page not in link_to_id_cache:
             continue
 
-        link_id = link_to_id[page]
+        link_id = link_to_id_cache[page]
 
         description = dictionary[page][3]
 
@@ -147,12 +148,12 @@ def linkInfo_into_database(dictionary):
 
 ##Puts the relationships between links into the database
 def linking_into_database(dictionary):
-    link_to_id = links_to_ids()
+    global link_to_id_cache
     
     data = []
     for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
-        page_id = link_to_id[page]
-        link_ids = [link_to_id[link] for link in links if link in link_to_id]
+        page_id = link_to_id_cache[page]
+        link_ids = [link_to_id_cache[link] for link in links if link in link_to_id_cache]
         data.append((page_id, link_ids))
 
     ##Queries data into the database
@@ -167,13 +168,13 @@ def linking_into_database(dictionary):
 ##Puts the inverted index into the database. (Columns: Word, ID[])
 def words_into_database(dictionary):
     inverted_index = createInvertedIndex(dictionary)
-    link_to_id = links_to_ids()
+    global link_to_id_cache
 
     data = []
     for word, pages in inverted_index.items():
         for link, frequency in pages.items():
-            if link in link_to_id:
-                link_id = link_to_id[link]
+            if link in link_to_id_cache:
+                link_id = link_to_id_cache[link]
                 data.append((word, link_id, frequency))
 
     cursor.executemany("""
@@ -227,33 +228,30 @@ def getLinking():
 
 ##Put all links into a table and set ID
 def links_into_database(dictionary):
-    ##Dictionary Format: linkOutputs[page] = (links, pageContent)
-    ##Finds links already in the database
-    cursor.execute('SELECT "Link" FROM "Links";')
-    existing_links = set(row[0] for row in cursor.fetchall())
-    
-    ##Sets all_links to everything not in database already
+    global link_to_id_cache
+
     all_links = set()
-    for page in dictionary:
-        all_links.update(dictionary[page][0])
+    for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
         all_links.add(page)
-    data = [(link,) for link in all_links if link not in existing_links]
-    
+        all_links.update(links)
+
+    data = [(link,) for link in all_links]
+
     cursor.executemany("""
-            INSERT INTO "Links" ("Link") 
-            VALUES (%s)
-            ON CONFLICT DO NOTHING;""",
-            data
-        )
+        INSERT INTO "Links" ("Link")
+        VALUES (%s)
+        ON CONFLICT ("Link") DO NOTHING;
+    """, data)
 
-    connection.commit()
-
-def links_to_ids():
     cursor.execute("""
-                   SELECT "ID", "Link"
-                   FROM "Links";"""
-                   )
-    return {Link: ID for ID, Link in cursor.fetchall()}
+        SELECT "ID", "Link"
+        FROM "Links"
+        WHERE "Link" = ANY(%s);
+    """, (list(all_links),))
+
+    link_map = {link: link_id for link_id, link in cursor.fetchall()}
+
+    link_to_id_cache.update(link_map)
 
 ##Stems a list of words
 def documentStemmer(list):
@@ -271,9 +269,9 @@ def removeStopWords(list):
 ##def removeDuplicates(list):
     ##return sorted(set(list), key=lambda x:list.index(x))
 
-def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, title_weight=8):
+def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, title_weight=200):
     query_words = documentStemmer(query.lower().split())
-    link_to_id = links_to_ids()
+    global link_to_id_cache
 
     base_scores = {}
 
@@ -285,10 +283,10 @@ def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, titl
 
     # Title bonus
     for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
-        if page not in link_to_id:
+        if page not in link_to_id_cache:
             continue
 
-        page_id = link_to_id[page]
+        page_id = link_to_id_cache[page]
 
         if pageTitle:
             title_words = documentStemmer(pageTitle.lower().split())
@@ -325,11 +323,12 @@ def main():
     createDatabase()
     resetDatabase()
     for i in range(links_to_search):
-        dictionary.update(crawler(1, "https://minecraft.wiki/"))
-        links_into_database(dictionary)
-        words_into_database(dictionary)
-        linking_into_database(dictionary)
-        linkInfo_into_database(dictionary)
+        new_page = crawler(1, "https://minecraft.wiki/")
+        dictionary.update(new_page)
+        links_into_database(new_page)
+        words_into_database(new_page)
+        linking_into_database(new_page)
+        linkInfo_into_database(new_page)
 
     print(rank_links("Minecraft", dictionary, getInvertedIndex(), getLinking()))
 
