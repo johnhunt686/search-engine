@@ -18,7 +18,7 @@ if __name__ == "__main__":
 
 def deleteTables():
     cursor.execute("""
-        DROP TABLE IF EXISTS "InvertedIndex", "Links", "Linking", "LinkWeight", "SearchedLinkInfo" CASCADE;"""
+        DROP TABLE IF EXISTS "InvertedIndex", "Links", "Linking", "SearchedLinkInfo" CASCADE;"""
     )
     connection.commit()
 
@@ -125,16 +125,13 @@ def linkInfo_into_database(dictionary):
     link_to_id = links_to_ids()
 
     data = []
-    for page, (links, pageContent, pageTitle) in dictionary.items():
+    for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
         if page not in link_to_id:
             continue
 
         link_id = link_to_id[page]
 
-        if isinstance(pageContent, list):
-            description = " ".join(pageContent[:40])
-        else:
-            description = str(pageContent)[:300]
+        description = dictionary[page][3]
 
         title = pageTitle if pageTitle else None
         data.append((link_id, title, description))
@@ -153,7 +150,7 @@ def linking_into_database(dictionary):
     link_to_id = links_to_ids()
     
     data = []
-    for page, (links, pageContent, pageTitle) in dictionary.items():
+    for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
         page_id = link_to_id[page]
         link_ids = [link_to_id[link] for link in links if link in link_to_id]
         data.append((page_id, link_ids))
@@ -287,7 +284,7 @@ def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, titl
                 base_scores[page_id] = base_scores.get(page_id, 0) + frequency
 
     # Title bonus
-    for page, (links, pageContent, pageTitle) in dictionary.items():
+    for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
         if page not in link_to_id:
             continue
 
@@ -322,7 +319,7 @@ def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, titl
 
 ##Main Program
 def main():
-    from crawler import crawler
+    from crawler import crawler, closeDriver
     dictionary = {}
     deleteTables()
     createDatabase()
@@ -336,6 +333,7 @@ def main():
 
     print(rank_links("Minecraft", dictionary, getInvertedIndex(), getLinking()))
 
+    closeDriver()
     connection.close()
     cursor.close()
     return
