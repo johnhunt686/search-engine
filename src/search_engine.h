@@ -6,7 +6,7 @@
 
 // Processes the query and fills the results vector with terms.
 // Returns 0 on success or non-zero on error.
-int search(std::string* query, std::vector<std::string>& results, int count);
+int search(std::string* query, std::vector<SearchResult>& results , int count){}
 
 std::string stem(std::string word);
 

@@ -7,7 +7,11 @@
 #include <cctype>
 #include <sstream>
 
-
+struct SearchResult {
+    std::string link;
+    std::string title;
+    std::string description;
+};
 
 int main(int argc, char* argv[])
 {
@@ -53,7 +57,7 @@ int main(int argc, char* argv[])
             return -1;
         }
     }
-    std::vector<std::string> result;
+    std::vector<SearchResult> result;
     search(&query, result, count);
 
     auto escape_json = [](const std::string& s){
@@ -92,9 +96,9 @@ int main(int argc, char* argv[])
     std::cout << "{ \"results\": {";
     for (int i = 0; i < result.size(); ++i) {
         std::cout << "\"result" << i << "\": {";
-        std::cout << "\"title\": \"Result " << (i+1) << "\",";
-        std::cout << "\"link\": \"" << result[i] << "\",";
-        std::cout << "\"description\": \"Placeholder description for item " << (i+1) << "\"";
+        std::cout << "\"title\": \"" << escape_json(result[i].title) << "\",";
+        std::cout << "\"link\": \"" << escape_json(result[i].link) << "\",";
+        std::cout << "\"description\": \"" << escape_json(result[i].description) << "\"";
         std::cout << "}";
         if (i +1 < result.size()) std::cout << ",";
     }
@@ -102,7 +106,7 @@ int main(int argc, char* argv[])
     return 0;
 }
 
-int search(std::string* query, std::vector<std::string>& results , int count){
+int search(std::string* query, std::vector<SearchResult>& results , int count){
     std::vector<std::string> stopWords = {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"};
     //seperate query into an array of words
     std::vector<std::string> terms;
@@ -122,7 +126,9 @@ int search(std::string* query, std::vector<std::string>& results , int count){
 
     // Stem the terms
     for (auto& term : terms) {
-        term = stem(term);
+        //term = stem(term);
+        //disable stem for now
+        term = term;
     }
 
 
@@ -138,23 +144,105 @@ int search(std::string* query, std::vector<std::string>& results , int count){
         pqxx::work W(C);
         std::stringstream sqlStream;
 
-        //inverted index sub-query vvv
-        sqlStream << "SELECT \"Link\" FROM public.\"InvertedIndex\" ii JOIN unnest(ii.\"Links\") AS link_id ON TRUE JOIN \"Links\" l ON l.\"ID\" = link_id WHERE ii.\"Word\" IN (";
-
+        // --- Build word list ---
+        std::stringstream wordList;
         for (size_t i = 0; i < terms.size(); ++i) {
-            if (i > 0) sqlStream << ", ";
-            sqlStream << "'" << terms[i] << "'";
+            if (i > 0) wordList << ", ";
+            wordList << "'" << terms[i] << "'";
         }
 
-        sqlStream << ") LIMIT " << count;
-        //inverted index sub-query ^^^
+        // --- Main SQL ---
+        sqlStream << R"(
+        WITH query_words AS (
+            SELECT UNNEST(ARRAY[
+        )" << wordList.str() << R"(
+            ]) AS word
+        ),
 
+        total_docs AS (
+            SELECT COUNT(DISTINCT "LinkID") AS N
+            FROM public."InvertedIndex"
+        ),
 
+        doc_freq AS (
+            SELECT 
+                ii."Word",
+                COUNT(DISTINCT ii."LinkID") AS df
+            FROM public."InvertedIndex" ii
+            JOIN query_words qw
+                ON ii."Word" = qw.word
+            GROUP BY ii."Word"
+        ),
+
+        bm25_scores AS (
+            SELECT
+                ii."LinkID",
+                ii."Word",
+                ii."Frequency",
+                df.df,
+                td.N,
+
+                LN(td.N::real / df.df) *
+                (ii."Frequency"::real / (ii."Frequency" + 1.2)) AS bm25_term
+
+            FROM public."InvertedIndex" ii
+            JOIN query_words qw
+                ON ii."Word" = qw.word
+            JOIN doc_freq df
+                ON ii."Word" = df."Word"
+            CROSS JOIN total_docs td
+        ),
+
+        aggregated AS (
+            SELECT
+                "LinkID",
+                SUM(bm25_term) AS text_score
+            FROM bm25_scores
+            GROUP BY "LinkID"
+        )
+
+        SELECT
+            a."LinkID",
+            rt.title,
+            rt.description,
+            a.text_score,
+            COALESCE(lw."Weight Score", 0) AS weight_score,
+            a.text_score * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
+
+        FROM aggregated a
+        LEFT JOIN public."LinkWeight" lw
+            ON a."LinkID" = lw."ID"
+        LEFT JOIN public."SearchedLinkInfo" sli
+            ON a."LinkID" = sli."LinkID"
+
+        ORDER BY final_score DESC
+        LIMIT )" << count << ";";
+
+        // --- Execute ---
         std::string sql = sqlStream.str();
-        pqxx::result R(W.exec(sql));
+        pqxx::result R = W.exec(sql);
 
         for (auto row : R) {
-            results.push_back(row[0].c_str());
+            SearchResult r;
+
+            // Column 0: Link (guaranteed NOT NULL due to WHERE clause)
+            r.link = row[0].c_str();
+
+            // Column 1: title
+            if (row[1].is_null() || std::string(row[1].c_str()).empty()) {
+                r.title = r.link; // fallback
+            } else {
+                r.title = row[1].c_str();
+            }
+
+            // Column 2: description
+            if (row[2].is_null()) {
+                r.description = "";
+            } else {
+                r.description = row[2].c_str();
+            }
+
+            results.push_back(r);
         }
 
         W.commit();

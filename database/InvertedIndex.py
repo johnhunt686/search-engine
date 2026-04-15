@@ -71,6 +71,44 @@ def createDatabase():
             ALTER TABLE IF EXISTS public."SearchedLinkInfo"
             OWNER to postgres;"""
         )
+        cursor.execute("""
+            CREATE OR REPLACE VIEW public."LinkWeight" AS
+                WITH edges AS (
+                    SELECT
+                        l."LinkID (source)" AS source,
+                        unnest(l."LinkID (destination)") AS destination
+                    FROM public."Linking" l
+                ),
+
+                out_counts AS (
+                    SELECT
+                        source AS id,
+                        COUNT(*) AS "Out-count"
+                    FROM edges
+                    GROUP BY source
+                ),
+
+                in_counts AS (
+                    SELECT
+                        destination AS id,
+                        COUNT(*) AS "In-count"
+                    FROM edges
+                    GROUP BY destination
+                )
+
+                SELECT
+                    COALESCE(o.id, i.id) AS "ID",
+                    COALESCE(o."Out-count", 0) AS "Out-count",
+                    COALESCE(i."In-count", 0) AS "In-count",
+
+                    LN(1 + COALESCE(i."In-count", 0)) 
+                    - LN(1 + COALESCE(o."Out-count", 0)) 
+                    AS "Weight Score"
+
+                FROM out_counts o
+                FULL OUTER JOIN in_counts i
+                ON o.id = i.id;"""
+        )
         connection.commit()
 
 
