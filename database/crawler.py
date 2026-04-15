@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from collections import deque
 
-
+driver = None
 visitedPages = set()
 sitesToVisit = deque()
 linkOutputs = {}
@@ -36,12 +36,8 @@ def scrapper(page, masterUrl, driver):
         if firstParagraph and len(firstParagraph) > 200:
             break
 
-
     linkOutputs[page] = (links, pageContent, pageTitle, firstParagraph)
     visitedPages.add(page)
-
-
-
 
 def splitStrings(string):
     words = []
@@ -51,7 +47,18 @@ def splitStrings(string):
         words.extend(words_in_line)
     return words
 
+def closeDriver():
+    global driver
+    if driver is not None:
+        driver.quit()
+        driver = None
+
 def crawler(numIterations, startingURL):
+    global driver
+    
+    if driver is None:
+        driver = webdriver.Chrome()
+
     if "https://" in startingURL:
        masterUrl = startingURL.split('/', 3)[0] + '//' + startingURL.split('/', 3)[2]
     else:
@@ -59,7 +66,6 @@ def crawler(numIterations, startingURL):
         startingURL = "https://" + startingURL
     currentIteration = 0
     sitesToVisit.append(startingURL)
-    driver = webdriver.Chrome()
     while(currentIteration < numIterations):
         while True:
             if not sitesToVisit:
@@ -70,7 +76,6 @@ def crawler(numIterations, startingURL):
         scrapper(page, masterUrl, driver)
         currentIteration = currentIteration + 1
     
-    driver.quit()
     return linkOutputs
 
 def getDictionary():
