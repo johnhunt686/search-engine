@@ -29,7 +29,7 @@ def scrapper(page, masterUrl):
     pageContent = trimList(pageContent)
     pageTitle = soup.title.string
 
-    print(soup.title.name())
+    print(soup.title.name)
 
     linkOutputs[page] = (links, pageContent, pageTitle)
     visitedPages.add(page)
