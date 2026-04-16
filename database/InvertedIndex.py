@@ -6,7 +6,7 @@ from nltk.corpus import stopwords
 
 ##Globals
 link_to_id_cache = {}
-links_to_search = 200
+links_to_search = 100
 all_links = []
 stemmer = SnowballStemmer("english")
 nltk.download('stopwords')
@@ -14,7 +14,7 @@ stop_words = set(stopwords.words('english'))
 
 if __name__ == "__main__":
     ##Database Stuff
-    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=5432)
+    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
     cursor = connection.cursor()
 
 def deleteTables():
