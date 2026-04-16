@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from collections import deque
 
 driver = None
@@ -58,7 +59,13 @@ def crawler(numIterations, startingURL):
     global driver
     
     if driver is None:
-        driver = webdriver.Chrome()
+        options = Options()
+        options.headless = True
+        chrome_options = webdriver.ChromeOptions()
+        chrome_options.add_argument('--blink-settings=imagesEnabled=false')
+        chrome_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
+        driver = webdriver.Chrome(options=options, chrome_options=chrome_options)
+
 
     if "https://" in startingURL:
        masterUrl = startingURL.split('/', 3)[0] + '//' + startingURL.split('/', 3)[2]
