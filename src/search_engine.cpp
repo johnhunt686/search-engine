@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cctype>
 #include <sstream>
+#include <libstemmer.h>
 
 
 int main(int argc, char* argv[])
@@ -102,6 +103,14 @@ int main(int argc, char* argv[])
 }
 
 int search(std::string* query, std::vector<SearchResult>& results, int count) {
+    //initialize stemmer
+    sb_stemmer* stemmer = sb_stemmer_new("english", nullptr);
+    if (!stemmer) {
+        std::cerr << "Failed to create stemmer\n";
+        return 1;
+    }
+
+
     std::vector<std::string> stopWords = {"i", "me", "my", "myself", "we", "our", "ours", "ourselves", "you", "your", "yours", "yourself", "yourselves", "he", "him", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself", "they", "them", "their", "theirs", "themselves", "what", "which", "who", "whom", "this", "that", "these", "those", "am", "is", "are", "was", "were", "be", "been", "being", "have", "has", "had", "having", "do", "does", "did", "doing", "a", "an", "the", "and", "but", "if", "or", "because", "as", "until", "while", "of", "at", "by", "for", "with", "about", "against", "between", "into", "through", "during", "before", "after", "above", "below", "to", "from", "up", "down", "in", "out", "on", "off", "over", "under", "again", "further", "then", "once", "here", "there", "when", "where", "why", "how", "all", "any", "both", "each", "few", "more", "most", "other", "some", "such", "no", "nor", "not", "only", "own", "same", "so", "than", "too", "very", "s", "t", "can", "will", "just", "don", "should", "now"};
     //seperate query into an array of words
     std::vector<std::string> terms;
@@ -121,9 +130,13 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
 
     // Stem the terms
     for (auto& term : terms) {
-        //term = stem(term);
-        //disable stem for now
-        term = term;
+        const sb_symbol* stemmed = sb_stemmer_stem(
+            stemmer,
+            (const sb_symbol*)term.c_str(),
+            term.length()
+        );
+
+        term = std::string((const char*)stemmed);
     }
 
 
@@ -291,7 +304,8 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
         return 1;
     }
 
-   
+    //close
+    sb_stemmer_delete(stemmer);
     return 0;
 }
 
