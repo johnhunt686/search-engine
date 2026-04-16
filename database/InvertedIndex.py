@@ -14,7 +14,7 @@ stop_words = set(stopwords.words('english'))
 
 if __name__ == "__main__":
     ##Database Stuff
-    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=41204)
+    connection = psycopg2.connect(host="localhost", dbname="SearchEngine", user="postgres", password="1234", port=5432)
     cursor = connection.cursor()
 
 def deleteTables():
@@ -265,63 +265,11 @@ def trimList(list):
 def removeStopWords(list):
     return [word for word in list if word not in stop_words]
 
-##Removes duplicates from a list
-##def removeDuplicates(list):
-    ##return sorted(set(list), key=lambda x:list.index(x))
-
-def rank_links(query, dictionary, inverted_index, linking_table, alpha=0.5, title_weight=200):
-    query_words = documentStemmer(query.lower().split())
-    global link_to_id_cache
-
-    base_scores = {}
-
-    # Body score
-    for word in query_words:
-        if word in inverted_index:
-            for page_id, frequency in inverted_index[word].items():
-                base_scores[page_id] = base_scores.get(page_id, 0) + frequency
-
-    # Title bonus
-    for page, (links, pageContent, pageTitle, firstParagraph) in dictionary.items():
-        if page not in link_to_id_cache:
-            continue
-
-        page_id = link_to_id_cache[page]
-
-        if pageTitle:
-            title_words = documentStemmer(pageTitle.lower().split())
-
-            for word in query_words:
-                count_in_title = title_words.count(word)
-                if count_in_title > 0:
-                    base_scores[page_id] = base_scores.get(page_id, 0) + title_weight * count_in_title
-
-    final_scores = {}
-    all_pages = set(base_scores.keys()) | set(linking_table.keys())
-
-    for page_id in all_pages:
-        own_score = base_scores.get(page_id, 0)
-
-        destinations = linking_table.get(page_id, [])
-        link_score = 0
-
-        if destinations:
-            for dest in destinations:
-                link_score += base_scores.get(dest, 0)
-            link_score /= len(destinations)
-
-        final_scores[page_id] = own_score + alpha * link_score
-
-    return sorted(final_scores.items(), key=lambda x: x[1], reverse=True)
-
-
 ##Main Program
 def main():
     from crawler import crawler, closeDriver
     dictionary = {}
-    deleteTables()
     createDatabase()
-    resetDatabase()
     for i in range(links_to_search):
         new_page = crawler(1, "https://minecraft.wiki/")
         dictionary.update(new_page)
@@ -329,8 +277,6 @@ def main():
         words_into_database(new_page)
         linking_into_database(new_page)
         linkInfo_into_database(new_page)
-
-    print(rank_links("Minecraft", dictionary, getInvertedIndex(), getLinking()))
 
     closeDriver()
     connection.close()

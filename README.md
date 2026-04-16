@@ -26,6 +26,7 @@ build-essential
 nodejs
 libpqxx-dev
 libpq-dev
+libstemmer-dev
 
 cmake execution
 cmake -C . -B build
@@ -41,6 +42,8 @@ the api server is started by executing
 
 the node server for the user interface is located in the website directory annd is started by executing
 'node server.js'
+
+with in the 'database' directory there is a run.sh script that initializes the web scrapper with default settings
 
 ## Access
 This system is designed to use a tunneled web host such as cloudflared.
