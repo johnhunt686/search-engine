@@ -1,14 +1,14 @@
 import psycopg2
 import os
 import nltk
-from nltk.stem import LancasterStemmer
+from nltk.stem import SnowballStemmer
 from nltk.corpus import stopwords
 
 ##Globals
 link_to_id_cache = {}
 links_to_search = 2000
 all_links = []
-lancaster_stemmer = LancasterStemmer()
+stemmer = SnowballStemmer("english")
 nltk.download('stopwords')
 stop_words = set(stopwords.words('english'))
 
@@ -255,7 +255,7 @@ def links_into_database(dictionary):
 
 ##Stems a list of words
 def documentStemmer(list):
-    return [lancaster_stemmer.stem(word) for word in list]
+    return [stemmer.stem(word) for word in list]
 
 ##Trims a list of words. Calls  the removeStopWords() and removeDuplicates() functions.
 def trimList(list):
