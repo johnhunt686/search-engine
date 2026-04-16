@@ -27,12 +27,19 @@ required packages before install
 git
 
 apt
+
 curl
+
 cmake
+
 build-essential
+
 nodejs
+
 libpqxx-dev
+
 libpq-dev
+
 libstemmer-dev
 
 cmake execution
