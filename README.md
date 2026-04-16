@@ -27,25 +27,17 @@ required packages before install
 git
 
 apt
-
 curl
-
 cmake
-
 build-essential
-
 nodejs
-
 libpqxx-dev
-
 libpq-dev
-
 libstemmer-dev
 
 cmake execution
 
 cmake -C . -B build
-
 cmake --build build
 
 Within the database directory there are two scripts, install.sh and install_postgresql.sh
