@@ -1,12 +1,12 @@
 #!/bin/bash
 echo "starting api..."
-node server.js
+node server.js&
 echo "done!"
 
 cd website
 
 echo "starting webserver"
-node server.js
+node server.js&
 echo "done!"
 
 read -p "Would you like to begin scrapping? This will remove existing data. (y/n): " answer
