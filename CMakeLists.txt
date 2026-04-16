@@ -11,3 +11,4 @@ add_executable(SearchEngine src/search_engine.cpp)
 
 target_include_directories(SearchEngine PRIVATE ${PQXX_INCLUDE_DIRS})
 target_link_libraries(SearchEngine PRIVATE ${PQXX_LIBRARIES})
+target_link_libraries(SearchEngine PRIVATE stemmer)
