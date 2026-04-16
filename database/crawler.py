@@ -61,10 +61,10 @@ def crawler(numIterations, startingURL):
     if driver is None:
         options = Options()
         options.headless = True
-        chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument('--blink-settings=imagesEnabled=false')
-        chrome_options.add_experimental_option("prefs", {"profile.managed_default_content_settings.images": 2})
-        driver = webdriver.Chrome(options=options, chrome_options=chrome_options)
+        prefs = {"profile.managed_default_content_settings.images": 2}
+        options.add_experimental_option("prefs", prefs)
+        options.add_argument('--blink-settings=imagesEnabled=false')
+        driver = webdriver.Chrome(options=options)
 
 
     if "https://" in startingURL:
