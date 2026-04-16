@@ -1,20 +1,44 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seaglance</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="bg-base"></div>
+    <div class="bg-glow"></div>
 
-    <h1>Glaggle</h1>
+    <div class="page-shell">
+        <header class="hero">
+            <div class="hero-content">
+                <div class="brand-row">
+                    <img src="SealFaceRight.png" alt="Seal logo" class="seal-logo left-seal">
 
-    <div class="search-container">
-        <form id="searchForm">
-            <input type="text" placeholder="Search Glaggle..." name="q" id="searchInput">
-            <button type="submit">Glag!</button>
-        </form>
+                    <div class="title-block">
+                        <h1>Seaglance</h1>
+                        <p class="tagline">Search your way.</p>
+                    </div>
+
+                    <img src="SealFaceLeft.png" alt="Seal logo" class="seal-logo right-seal">
+                </div>
+
+                <form id="searchForm" class="search-bar">
+                    <input type="text"
+                           placeholder="Search Seaglance..."
+                           name="q"
+                           id="searchInput">
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+        </header>
+
+        <main class="results-section">
+            <div class="results-backdrop"></div>
+            <div id="results"></div>
+        </main>
     </div>
-
-
-    <div id="results"></div>
 
     <script src="script.js"></script>
 </body>
