@@ -5,11 +5,11 @@ from collections import deque
 driver = None
 visitedPages = set()
 sitesToVisit = deque()
-linkOutputs = {}
 
 def scrapper(page, masterUrl, driver):
     from InvertedIndex import trimList
-    
+    linkOutputs = {}
+
     driver.get(page)
     page_html = driver.page_source
     soup = BeautifulSoup(page_html, 'html.parser')
@@ -35,9 +35,10 @@ def scrapper(page, masterUrl, driver):
         firstParagraph = p.get_text(separator = " ", strip = True)
         if firstParagraph and len(firstParagraph) > 200:
             break
-
+    
     linkOutputs[page] = (links, pageContent, pageTitle, firstParagraph)
     visitedPages.add(page)
+    return linkOutputs
 
 def splitStrings(string):
     words = []
@@ -73,10 +74,8 @@ def crawler(numIterations, startingURL):
             page = sitesToVisit.popleft()
             if(page not in visitedPages):
                 break
-        scrapper(page, masterUrl, driver)
+        linkOutputs = scrapper(page, masterUrl, driver)
         currentIteration = currentIteration + 1
     
     return linkOutputs
 
-def getDictionary():
-    return  linkOutputs
