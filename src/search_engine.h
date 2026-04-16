@@ -4,6 +4,12 @@
 
 #include <string>
 #include <vector>
+#include <iostream>
+#include <pqxx/pqxx>
+#include <algorithm>
+#include <cctype>
+#include <sstream>
+#include <libstemmer.h>
 
 struct SearchResult {
     std::string link;
