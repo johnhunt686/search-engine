@@ -194,6 +194,38 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
                 SUM(bm25_term) AS text_score
             FROM bm25_scores
             GROUP BY "LinkID"
+        ),
+
+        -- NEW: compute per-word matches in title/description
+        field_matches AS (
+            SELECT
+                a."LinkID",
+                qw.word,
+
+                CASE 
+                    WHEN sli."Title" ILIKE '%' || qw.word || '%' THEN 1 
+                    ELSE 0 
+                END AS title_match,
+
+                CASE 
+                    WHEN sli."Description" ILIKE '%' || qw.word || '%' THEN 1 
+                    ELSE 0 
+                END AS desc_match
+
+            FROM aggregated a
+            JOIN public."SearchedLinkInfo" sli
+                ON a."LinkID" = sli."LinkID"
+            CROSS JOIN query_words qw
+        ),
+
+        -- NEW: aggregate matches per document
+        field_scores AS (
+            SELECT
+                "LinkID",
+                SUM(title_match) AS title_matches,
+                SUM(desc_match) AS desc_matches
+            FROM field_matches
+            GROUP BY "LinkID"
         )
 
         SELECT
@@ -202,10 +234,20 @@ int search(std::string* query, std::vector<SearchResult>& results, int count) {
             sli."Description",
             a.text_score,
             COALESCE(lw."Weight Score", 0) AS weight_score,
-            a.text_score * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
+
+            -- FINAL SCORE WITH CAPS
+            (
+                a.text_score
+                + LEAST(3.0 * COALESCE(fs.title_matches, 0), 8.0)
+                + LEAST(0.7 * COALESCE(fs.desc_matches, 0), 3.0)
+            )
+            * (1 + 0.3 * COALESCE(lw."Weight Score", 0)) AS final_score
 
         FROM aggregated a
-        
+
+        LEFT JOIN field_scores fs
+            ON a."LinkID" = fs."LinkID"
+
         LEFT JOIN public."Links" l
             ON a."LinkID" = l."ID"
         LEFT JOIN public."LinkWeight" lw
