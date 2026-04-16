@@ -29,7 +29,12 @@ def scrapper(page, masterUrl, driver):
     pageContent = soup.get_text()
     pageContent = splitStrings(pageContent)
     pageContent = trimList(pageContent)
-    pageTitle = soup.title.string
+    if soup.title and soup.title.string:
+        pageTitle = soup.title.string
+    else:
+       visitedPages.add(page)
+       linkOutputs[page] = ("", "", "", "")
+       return linkOutputs
 
     firstParagraph = ""
     paragraph = soup.find_all("p")
